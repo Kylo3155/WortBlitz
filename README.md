@@ -1,4 +1,4 @@
-# WortMeister 🇩🇪 - Práctica de Sustantivos en Alemán
+# WortBlitz ⚡🇩🇪 - Práctica de Sustantivos en Alemán
 
 Una aplicación web moderna, interactiva y responsiva diseñada para dominar el género (**der**, **die**, **das**), la **forma plural** y la **traducción** de más de 120 sustantivos esenciales en alemán.
 
@@ -28,7 +28,7 @@ Este proyecto está preparado para desplegarse como un sitio estático en [Verce
    ```bash
    git init
    git add .
-   git commit -m "Initial commit - WortMeister"
+   git commit -m "Initial commit - WortBlitz"
    git remote add origin https://github.com/TU_USUARIO/TU_REPOSITORIO.git
    git push -u origin main
    ```
@@ -36,7 +36,7 @@ Este proyecto está preparado para desplegarse como un sitio estático en [Verce
 3. Haz clic en **"Add New..."** -> **"Project"**.
 4. Selecciona tu repositorio recién creado.
 5. Vercel detectará el archivo `index.html` automáticamente. No necesitas modificar ningún comando de compilación (`Build Command: None`, `Output Directory: ./`).
-6. Haz clic en **"Deploy"**. En segundos tendrás una URL en vivo (ej. `wortmeister.vercel.app`) con certificado SSL automático.
+6. Haz clic en **"Deploy"**. En segundos tendrás una URL en vivo (ej. `wortblitz.vercel.app`) con certificado SSL automático.
 
 ### Opción 2: Usando Vercel CLI
 Si tienes Node.js en tu equipo, puedes desplegar directamente desde la terminal:

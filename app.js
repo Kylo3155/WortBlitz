@@ -1,5 +1,5 @@
 /**
- * WortMeister - Lógica Principal de la Aplicación
+ * WortBlitz ⚡ - Lógica Principal de la Aplicación
  */
 
 (function () {
