@@ -309,20 +309,20 @@
       dom.inputTranslation.style.cursor = 'text';
       if (dom.translationFieldHint) dom.translationFieldHint.textContent = '(Escribe en español)';
     } else {
-      // MODO DIFÍCIL: Escribes el artículo y el plural. Traducción visible.
-      // Plural editable
+      // MODO DIFÍCIL: Escribes todo (artículo, plural y traducción).
+      // Plural editable y vacío
       dom.inputPlural.value = '';
       dom.inputPlural.removeAttribute('readonly');
       dom.inputPlural.style.opacity = '1';
       dom.inputPlural.style.cursor = 'text';
       if (dom.pluralFieldHint) dom.pluralFieldHint.textContent = 'die + sustantivo';
 
-      // Traducción visible y bloqueada
-      dom.inputTranslation.value = state.currentWord.translation;
-      dom.inputTranslation.setAttribute('readonly', 'true');
-      dom.inputTranslation.style.opacity = '0.75';
-      dom.inputTranslation.style.cursor = 'default';
-      if (dom.translationFieldHint) dom.translationFieldHint.textContent = '(Visible en modo difícil)';
+      // Traducción editable y vacía
+      dom.inputTranslation.value = '';
+      dom.inputTranslation.removeAttribute('readonly');
+      dom.inputTranslation.style.opacity = '1';
+      dom.inputTranslation.style.cursor = 'text';
+      if (dom.translationFieldHint) dom.translationFieldHint.textContent = '(Escribe en español)';
     }
   }
 
@@ -376,17 +376,17 @@
     const articleValid = userArticle === expectedArticle;
 
     // Validación Plural:
-    // Solo requerida en 'hard' ("el más difícil sea escribir el plural")
+    // Solo requerida en 'hard' ("en el modo difícil hay que escribir todo")
     let pluralValid = true;
     if (state.difficulty === 'hard') {
       pluralValid = userPlural === expectedPlural;
     }
 
     // Validación Traducción:
-    // Solo requerida en 'medium' ("el nivel medio sea escribir el artículo y la traducción")
+    // Requerida en 'medium' y en 'hard' (solo en 'easy' está visible)
     let translationValid = true;
     let userTranslation = '';
-    if (state.difficulty === 'medium') {
+    if (state.difficulty === 'medium' || state.difficulty === 'hard') {
       userTranslation = normalizeText(dom.inputTranslation.value);
       const userClean = stripSpanishArticles(userTranslation);
       const userCleanNoAccents = removeAccents(userClean);
@@ -414,7 +414,7 @@
     if (state.difficulty === 'hard') {
       setInputValidationState(dom.inputPlural, pluralValid);
     }
-    if (state.difficulty === 'medium') {
+    if (state.difficulty === 'medium' || state.difficulty === 'hard') {
       setInputValidationState(dom.inputTranslation, translationValid);
     }
 
@@ -544,10 +544,10 @@
 
     // Desglose de Traducción
     dom.corrValTrans.textContent = word.translation;
-    if (state.difficulty === 'easy' || state.difficulty === 'hard') {
+    if (state.difficulty === 'easy') {
       dom.cardTrans.className = 'solution-card is-correct';
       dom.statusIconTrans.textContent = 'ℹ️';
-      dom.corrUserTrans.innerHTML = `<span class="correct-text">Visible en modo ${state.difficulty === 'easy' ? 'fácil' : 'difícil'}</span>`;
+      dom.corrUserTrans.innerHTML = `<span class="correct-text">Visible en modo fácil</span>`;
     } else if (details.translationValid) {
       dom.cardTrans.className = 'solution-card is-correct';
       dom.statusIconTrans.textContent = '✅';
@@ -807,15 +807,53 @@
       }
     });
 
-    // Enter en cualquier input
-    [dom.inputArticle, dom.inputPlural, dom.inputTranslation].forEach(input => {
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          e.stopPropagation();
-          checkAnswers();
+    // Enter en inputs con avance inteligente
+    dom.inputArticle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (state.difficulty === 'medium') {
+          if (!dom.inputTranslation.value.trim()) {
+            dom.inputTranslation.focus();
+            state.lastActiveInput = dom.inputTranslation;
+            return;
+          }
+        } else if (state.difficulty === 'hard') {
+          if (!dom.inputPlural.value.trim()) {
+            dom.inputPlural.focus();
+            state.lastActiveInput = dom.inputPlural;
+            return;
+          } else if (!dom.inputTranslation.value.trim()) {
+            dom.inputTranslation.focus();
+            state.lastActiveInput = dom.inputTranslation;
+            return;
+          }
         }
-      });
+        checkAnswers();
+      }
+    });
+
+    dom.inputPlural.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (state.difficulty === 'hard') {
+          if (!dom.inputTranslation.value.trim()) {
+            dom.inputTranslation.focus();
+            state.lastActiveInput = dom.inputTranslation;
+            return;
+          }
+        }
+        checkAnswers();
+      }
+    });
+
+    dom.inputTranslation.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
+        checkAnswers();
+      }
     });
 
     // Atajos globales
