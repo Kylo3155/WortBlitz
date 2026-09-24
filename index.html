@@ -31,9 +31,6 @@
         <button id="btn-vocab-modal" class="btn-secondary" title="Ver lista completa de vocabulario">
           <span>📚</span> Vocabulario
         </button>
-        <button id="btn-vercel-modal" class="btn-secondary" title="Guía para desplegar en Vercel">
-          <span>▲</span> Desplegar
-        </button>
         <button id="btn-sound-toggle" class="icon-btn" title="Activar/Silenciar sonido">
           <span id="sound-icon">🔊</span>
         </button>
@@ -65,17 +62,22 @@
 
     <!-- Controls Panel (Difficulty & Filters) -->
     <section class="controls-panel">
-      <!-- Difficulty Tabs -->
+      <!-- Difficulty Tabs (Fácil / Medio / Difícil) -->
       <div class="mode-selector" role="radiogroup" aria-label="Nivel de dificultad">
-        <button id="mode-practice" class="mode-btn active" role="radio" aria-checked="true">
-          <span class="mode-indicator"></span>
-          <span>Modo Práctica</span>
-          <small style="opacity: 0.7; font-weight: normal;">(Traducción visible)</small>
+        <button id="mode-easy" class="mode-btn active" role="radio" aria-checked="true">
+          <span class="mode-indicator indicator-easy"></span>
+          <span class="mode-title">Fácil</span>
+          <small class="mode-desc">Solo artículo</small>
         </button>
-        <button id="mode-challenge" class="mode-btn" role="radio" aria-checked="false">
-          <span class="mode-indicator"></span>
-          <span>Modo Desafío</span>
-          <small style="opacity: 0.7; font-weight: normal;">(Escribes todo)</small>
+        <button id="mode-medium" class="mode-btn" role="radio" aria-checked="false">
+          <span class="mode-indicator indicator-medium"></span>
+          <span class="mode-title">Medio</span>
+          <small class="mode-desc">Artículo + Plural</small>
+        </button>
+        <button id="mode-hard" class="mode-btn" role="radio" aria-checked="false">
+          <span class="mode-indicator indicator-hard"></span>
+          <span class="mode-title">Difícil</span>
+          <small class="mode-desc">Escribes todo</small>
         </button>
       </div>
 
@@ -170,7 +172,7 @@
           <div class="form-group">
             <label class="form-label" for="input-plural">
               <span>Forma Plural</span>
-              <span class="label-hint">die + sustantivo</span>
+              <span class="label-hint" id="plural-field-hint">die + sustantivo</span>
             </label>
             <div class="input-wrapper has-prefix">
               <span class="input-prefix">die</span>
@@ -245,39 +247,82 @@
 
   </div>
 
-  <!-- Modal 1: ¿Cómo publicar en Vercel? -->
-  <div id="modal-vercel" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-vercel-title">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="modal-vercel-title">🚀 Cómo hostear tu página gratis en Vercel</h2>
-        <button class="icon-btn close-modal" data-modal="modal-vercel">&times;</button>
+  <!-- Modal de Corrección: Cartel con la Solución Correcta ante Error -->
+  <div id="modal-correction" class="modal-overlay correction-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-corr-title">
+    <div class="modal-content correction-card">
+      
+      <div class="correction-banner">
+        <div class="correction-icon-wrapper">⚠️</div>
+        <div class="correction-banner-text">
+          <h2 id="modal-corr-title">¡Casi! Revisa la solución correcta</h2>
+          <p class="correction-subtitle">Aprende los detalles antes de continuar con la siguiente palabra:</p>
+        </div>
+        <button class="icon-btn close-modal" data-modal="modal-correction" id="btn-close-correction" title="Cerrar">&times;</button>
       </div>
-      <div class="modal-body">
-        <p>Esta aplicación está lista para Vercel sin ninguna configuración previa. Sigue cualquiera de estas dos opciones gratuitas:</p>
+
+      <div class="modal-body correction-body">
         
-        <div class="step-card">
-          <h4>1. Subir a GitHub y conectar a Vercel (Recomendado)</h4>
-          <ol style="margin-left: 1.25rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.35rem;">
-            <li>Crea un repositorio en <a href="https://github.com" target="_blank" rel="noopener">GitHub</a> con esta carpeta.</li>
-            <li>Inicia sesión en <a href="https://vercel.com" target="_blank" rel="noopener">Vercel.com</a>.</li>
-            <li>Haz clic en <strong>"Add New Project"</strong> y selecciona tu repositorio.</li>
-            <li>Vercel detectará el archivo <code>index.html</code> automáticamente. Haz clic en <strong>"Deploy"</strong>.</li>
-            <li>¡En 5 segundos tendrás tu URL pública con HTTPS y actualizaciones automáticas!</li>
-          </ol>
+        <!-- Tarjeta destacada de la palabra correcta -->
+        <div class="correct-word-hero" id="corr-word-hero">
+          <div class="hero-badges">
+            <span class="hero-badge" id="corr-cat-badge">Categoría</span>
+            <span class="hero-badge level" id="corr-level-badge">A1</span>
+          </div>
+          <div class="hero-word-line">
+            <span class="hero-article" id="corr-hero-article">der</span>
+            <span class="hero-noun" id="corr-hero-noun">Hund</span>
+            <button type="button" class="hero-speak-btn" id="corr-btn-speak" title="Escuchar pronunciación nativa">
+              <span>🔊</span> Escuchar
+            </button>
+          </div>
+          <div class="hero-translation-line">
+            <span class="hero-trans-label">Significado:</span>
+            <strong id="corr-hero-translation">perro</strong>
+          </div>
         </div>
 
-        <div class="step-card">
-          <h4>2. Despliegue con Vercel CLI (Desde la consola)</h4>
-          <p>Si tienes Node.js instalado, puedes ejecutar en esta carpeta:</p>
-          <pre class="code-badge">npx vercel</pre>
-          <p style="margin-top: 0.35rem;">Sigue las preguntas rápidas en la consola y tu sitio quedará en línea al instante.</p>
+        <!-- Desglose comparativo -->
+        <div class="solution-grid">
+          
+          <div class="solution-card" id="solution-card-article">
+            <div class="solution-card-top">
+              <span class="solution-label">Artículo</span>
+              <span class="solution-status-icon" id="status-icon-article">❌</span>
+            </div>
+            <div class="solution-correct-val" id="corr-val-article">der</div>
+            <div class="solution-user-val" id="corr-user-article">Escribiste: <em>—</em></div>
+          </div>
+
+          <div class="solution-card" id="solution-card-plural">
+            <div class="solution-card-top">
+              <span class="solution-label">Forma Plural</span>
+              <span class="solution-status-icon" id="status-icon-plural">❌</span>
+            </div>
+            <div class="solution-correct-val" id="corr-val-plural">die Hunde</div>
+            <div class="solution-user-val" id="corr-user-plural">Escribiste: <em>—</em></div>
+          </div>
+
+          <div class="solution-card" id="solution-card-trans">
+            <div class="solution-card-top">
+              <span class="solution-label">Traducción</span>
+              <span class="solution-status-icon" id="status-icon-trans">❌</span>
+            </div>
+            <div class="solution-correct-val" id="corr-val-trans">perro</div>
+            <div class="solution-user-val" id="corr-user-trans">Escribiste: <em>—</em></div>
+          </div>
+
         </div>
 
-        <div class="step-card">
-          <h4>3. Archivo vercel.json incluido</h4>
-          <p>Ya incluimos un archivo <code>vercel.json</code> en el proyecto con las cabeceras de caché óptimas para archivos estáticos.</p>
-        </div>
       </div>
+
+      <div class="correction-footer">
+        <button type="button" id="btn-continue-after-error" class="btn-primary btn-continue-error">
+          <span>Entendido, siguiente palabra</span>
+          <span class="arrow-icon">➔</span>
+          <kbd class="key-hint">Enter</kbd>
+        </button>
+      </div>
+
     </div>
   </div>
 

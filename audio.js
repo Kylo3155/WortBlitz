@@ -1,13 +1,18 @@
 /**
- * Efectos de sonido generados con Web Audio API y pronunciación nativa con SpeechSynthesis.
- * 100% autónomo, sin dependencias externas ni archivos de audio pesados.
+ * WortBlitz ⚡ - Sistema de Sonido y Pronunciación Nativa en Alemán
+ * 
+ * Incluye:
+ * 1. Pronunciación en alemán nativo auténtico (alta fidelidad vía Google Neural German TTS).
+ * 2. Fallback inteligente a Web Speech API con detección prioritaria de voces alemanas.
+ * 3. Efectos de sonido sintetizados en tiempo real con Web Audio API (aciertos, fallos, rachas).
  */
 
 class SoundController {
   constructor() {
     this.ctx = null;
     this.enabled = true;
-    this.voice = null;
+    this.currentAudio = null;
+    this.audioCache = new Map();
     this.initVoices();
   }
 
@@ -25,17 +30,130 @@ class SoundController {
 
   initVoices() {
     if (!('speechSynthesis' in window)) return;
-    const loadVoice = () => {
-      const voices = window.speechSynthesis.getVoices();
-      // Buscar voz en alemán (de-DE o de)
-      this.voice = voices.find(v => v.lang.startsWith('de')) || null;
+    const loadVoices = () => {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.getVoices();
+      }
     };
-
-    loadVoice();
+    loadVoices();
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
-      window.speechSynthesis.onvoiceschanged = loadVoice;
+      window.speechSynthesis.onvoiceschanged = loadVoices;
     }
   }
+
+  /**
+   * Encuentra la mejor voz alemana disponible en el sistema.
+   * Evita estrictamente usar voces en inglés para texto en alemán.
+   */
+  getBestGermanVoice() {
+    if (!('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices() || [];
+    if (!voices.length) return null;
+
+    // Buscar voces que pertenezcan a la familia del idioma alemán (de-DE, de-AT, de-CH, de)
+    const deVoices = voices.filter(v => {
+      const lang = (v.lang || '').toLowerCase().replace('_', '-');
+      return lang.startsWith('de');
+    });
+
+    if (deVoices.length > 0) {
+      // Priorizar voces alemanas neuronales / naturales / Google Deutsch
+      return (
+        deVoices.find(v => /google|natural|online|neural|katja|stefan|hedda|marlene/i.test(v.name)) ||
+        deVoices.find(v => (v.lang || '').toLowerCase() === 'de-de') ||
+        deVoices[0]
+      );
+    }
+    return null;
+  }
+
+  /**
+   * Pronuncia un término en alemán nativo garantizado.
+   * Usa audio nativo real para evitar que motores de Windows sin paquete alemán
+   * lo lean con acento inglés.
+   */
+  speak(text) {
+    if (!this.enabled || !text) return;
+    const cleanText = text.trim();
+    if (!cleanText) return;
+
+    this.stopSpeaking();
+
+    // 1. Motor principal: Audio alemán nativo de alta fidelidad (audio/mpeg)
+    const encoded = encodeURIComponent(cleanText);
+    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=de&q=${encoded}`;
+
+    try {
+      let audio = this.audioCache.get(cleanText);
+      if (!audio) {
+        audio = new Audio(audioUrl);
+        this.audioCache.set(cleanText, audio);
+      } else {
+        audio.currentTime = 0;
+      }
+
+      this.currentAudio = audio;
+
+      let fallbackTriggered = false;
+      const doFallback = () => {
+        if (!fallbackTriggered) {
+          fallbackTriggered = true;
+          this.speakWithSpeechSynthesis(cleanText);
+        }
+      };
+
+      audio.onerror = () => {
+        doFallback();
+      };
+
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          doFallback();
+        });
+      }
+    } catch (err) {
+      this.speakWithSpeechSynthesis(cleanText);
+    }
+  }
+
+  /**
+   * Fallback local a SpeechSynthesis con verificación rigurosa de voz alemana.
+   */
+  speakWithSpeechSynthesis(text) {
+    if (!('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'de-DE';
+      utterance.rate = 0.88; // Ritmo didáctico y natural
+
+      const germanVoice = this.getBestGermanVoice();
+      if (germanVoice) {
+        utterance.voice = germanVoice;
+      }
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.warn("SpeechSynthesis error:", e);
+    }
+  }
+
+  stopSpeaking() {
+    if (this.currentAudio) {
+      try {
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+      } catch (e) {}
+      this.currentAudio = null;
+    }
+    if ('speechSynthesis' in window) {
+      try {
+        window.speechSynthesis.cancel();
+      } catch (e) {}
+    }
+  }
+
+  // --- Efectos de Sonido Sintetizados (Web Audio API) ---
 
   playSuccess() {
     if (!this.enabled) return;
@@ -121,22 +239,6 @@ class SoundController {
       });
     } catch (e) {
       console.warn("Streak sound error:", e);
-    }
-  }
-
-  speak(text) {
-    if (!('speechSynthesis' in window)) return;
-    try {
-      window.speechSynthesis.cancel(); // Detener anteriores
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'de-DE';
-      utterance.rate = 0.9; // Velocidad cómoda para estudiantes
-      if (this.voice) {
-        utterance.voice = this.voice;
-      }
-      window.speechSynthesis.speak(utterance);
-    } catch (e) {
-      console.warn("Speech error:", e);
     }
   }
 }

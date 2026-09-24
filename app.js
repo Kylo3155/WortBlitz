@@ -7,7 +7,7 @@
 
   // --- Estado de la aplicación ---
   const state = {
-    difficulty: 'practice', // 'practice' (traducción visible) | 'challenge' (traducción oculta)
+    difficulty: 'easy', // 'easy' (solo artículo) | 'medium' (artículo + plural) | 'hard' (todo)
     category: 'all',
     level: 'all',
     isReviewingMistakes: false,
@@ -16,6 +16,7 @@
     currentIndex: 0,
     currentWord: null,
     evaluated: false,
+    isShowingCorrection: false,
     
     mistakes: new Set(), // IDs de palabras falladas
     
@@ -37,7 +38,6 @@
     soundIcon: document.getElementById('sound-icon'),
     themeToggle: document.getElementById('btn-theme-toggle'),
     themeIcon: document.getElementById('theme-icon'),
-    btnVercelModal: document.getElementById('btn-vercel-modal'),
     btnVocabModal: document.getElementById('btn-vocab-modal'),
     
     // Stats
@@ -46,9 +46,10 @@
     statAccuracy: document.getElementById('stat-accuracy'),
     statTotal: document.getElementById('stat-total'),
 
-    // Difficulty & Filters
-    modePractice: document.getElementById('mode-practice'),
-    modeChallenge: document.getElementById('mode-challenge'),
+    // Difficulty & Filters (3 Modos: Fácil, Medio, Difícil)
+    modeEasy: document.getElementById('mode-easy'),
+    modeMedium: document.getElementById('mode-medium'),
+    modeHard: document.getElementById('mode-hard'),
     categorySelect: document.getElementById('category-select'),
     levelSelect: document.getElementById('level-select'),
     btnReviewMistakes: document.getElementById('btn-review-mistakes'),
@@ -69,6 +70,7 @@
     form: document.getElementById('practice-form'),
     inputArticle: document.getElementById('input-article'),
     inputPlural: document.getElementById('input-plural'),
+    pluralFieldHint: document.getElementById('plural-field-hint'),
     inputTranslation: document.getElementById('input-translation'),
     translationFieldHint: document.getElementById('translation-field-hint'),
     articleQuickBtns: document.querySelectorAll('.article-quick-btn'),
@@ -84,12 +86,37 @@
     feedbackDetails: document.getElementById('feedback-details'),
 
     // Modals
-    modalVercel: document.getElementById('modal-vercel'),
     modalVocab: document.getElementById('modal-vocab'),
     modalVocabTotal: document.getElementById('modal-vocab-total'),
     vocabSearch: document.getElementById('vocab-search'),
     vocabList: document.getElementById('vocab-list'),
-    closeModalBtns: document.querySelectorAll('.close-modal')
+    closeModalBtns: document.querySelectorAll('.close-modal'),
+
+    // Modal de Corrección (Cartel de solución ante error)
+    modalCorrection: document.getElementById('modal-correction'),
+    btnCloseCorrection: document.getElementById('btn-close-correction'),
+    btnContinueAfterError: document.getElementById('btn-continue-after-error'),
+    corrHeroArticle: document.getElementById('corr-hero-article'),
+    corrHeroNoun: document.getElementById('corr-hero-noun'),
+    corrHeroTranslation: document.getElementById('corr-hero-translation'),
+    corrBtnSpeak: document.getElementById('corr-btn-speak'),
+    corrCatBadge: document.getElementById('corr-cat-badge'),
+    corrLevelBadge: document.getElementById('corr-level-badge'),
+
+    cardArticle: document.getElementById('solution-card-article'),
+    corrValArticle: document.getElementById('corr-val-article'),
+    corrUserArticle: document.getElementById('corr-user-article'),
+    statusIconArticle: document.getElementById('status-icon-article'),
+
+    cardPlural: document.getElementById('solution-card-plural'),
+    corrValPlural: document.getElementById('corr-val-plural'),
+    corrUserPlural: document.getElementById('corr-user-plural'),
+    statusIconPlural: document.getElementById('status-icon-plural'),
+
+    cardTrans: document.getElementById('solution-card-trans'),
+    corrValTrans: document.getElementById('corr-val-trans'),
+    corrUserTrans: document.getElementById('corr-user-trans'),
+    statusIconTrans: document.getElementById('status-icon-trans')
   };
 
   // --- Inicialización ---
@@ -118,10 +145,12 @@
     }
 
     const savedDifficulty = localStorage.getItem('wm_difficulty');
-    if (savedDifficulty === 'challenge') {
-      setDifficulty('challenge');
+    if (savedDifficulty === 'hard' || savedDifficulty === 'challenge') {
+      setDifficulty('hard');
+    } else if (savedDifficulty === 'medium') {
+      setDifficulty('medium');
     } else {
-      setDifficulty('practice');
+      setDifficulty('easy');
     }
   }
 
@@ -203,27 +232,45 @@
     }, 50);
   }
 
-  // --- Manejo de Dificultades ---
+  // --- Manejo de Dificultades (Fácil, Medio, Difícil) ---
   function setDifficulty(mode) {
     state.difficulty = mode;
     localStorage.setItem('wm_difficulty', mode);
 
-    if (mode === 'practice') {
-      dom.modePractice.classList.add('active');
-      dom.modePractice.setAttribute('aria-checked', 'true');
-      dom.modeChallenge.classList.remove('active');
-      dom.modeChallenge.setAttribute('aria-checked', 'false');
-      dom.cardModeBadge.textContent = 'Modo Práctica';
+    [dom.modeEasy, dom.modeMedium, dom.modeHard].forEach(btn => {
+      if (btn) {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-checked', 'false');
+      }
+    });
+
+    if (mode === 'easy') {
+      if (dom.modeEasy) {
+        dom.modeEasy.classList.add('active');
+        dom.modeEasy.setAttribute('aria-checked', 'true');
+      }
+      dom.cardModeBadge.textContent = 'Fácil';
+      dom.cardModeBadge.style.color = '#10b981';
+      dom.cardModeBadge.style.background = 'rgba(16, 185, 129, 0.15)';
+      dom.cardModeBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+    } else if (mode === 'medium') {
+      if (dom.modeMedium) {
+        dom.modeMedium.classList.add('active');
+        dom.modeMedium.setAttribute('aria-checked', 'true');
+      }
+      dom.cardModeBadge.textContent = 'Medio';
       dom.cardModeBadge.style.color = '#38bdf8';
       dom.cardModeBadge.style.background = 'rgba(56, 189, 248, 0.15)';
+      dom.cardModeBadge.style.borderColor = 'rgba(56, 189, 248, 0.3)';
     } else {
-      dom.modeChallenge.classList.add('active');
-      dom.modeChallenge.setAttribute('aria-checked', 'true');
-      dom.modePractice.classList.remove('active');
-      dom.modePractice.setAttribute('aria-checked', 'false');
-      dom.cardModeBadge.textContent = 'Modo Desafío';
+      if (dom.modeHard) {
+        dom.modeHard.classList.add('active');
+        dom.modeHard.setAttribute('aria-checked', 'true');
+      }
+      dom.cardModeBadge.textContent = 'Difícil';
       dom.cardModeBadge.style.color = '#f59e0b';
       dom.cardModeBadge.style.background = 'rgba(245, 158, 11, 0.15)';
+      dom.cardModeBadge.style.borderColor = 'rgba(245, 158, 11, 0.3)';
     }
 
     updateModeDisplay();
@@ -232,22 +279,55 @@
   function updateModeDisplay() {
     if (!state.currentWord) return;
 
-    if (state.difficulty === 'practice') {
-      // Dificultad 1: Traducción mostrada automáticamente
+    if (state.difficulty === 'easy') {
+      // MODO FÁCIL: Solamente escribes el artículo. Plural y traducción visibles.
       dom.translationHintBox.style.display = 'inline-flex';
       dom.targetTranslationHint.textContent = state.currentWord.translation;
 
-      // Campo de traducción auto-completado y de solo lectura
+      // Plural visible y bloqueado
+      dom.inputPlural.value = state.currentWord.plural;
+      dom.inputPlural.setAttribute('readonly', 'true');
+      dom.inputPlural.style.opacity = '0.75';
+      dom.inputPlural.style.cursor = 'default';
+      if (dom.pluralFieldHint) dom.pluralFieldHint.textContent = '(Visible en modo fácil)';
+
+      // Traducción visible y bloqueada
       dom.inputTranslation.value = state.currentWord.translation;
       dom.inputTranslation.setAttribute('readonly', 'true');
       dom.inputTranslation.style.opacity = '0.75';
       dom.inputTranslation.style.cursor = 'default';
-      dom.translationFieldHint.textContent = '(Visible en modo práctica)';
+      dom.translationFieldHint.textContent = '(Visible en modo fácil)';
+    } else if (state.difficulty === 'medium') {
+      // MODO MEDIO: Escribes el artículo y el plural. Traducción visible.
+      dom.translationHintBox.style.display = 'inline-flex';
+      dom.targetTranslationHint.textContent = state.currentWord.translation;
+
+      // Plural editable
+      dom.inputPlural.value = '';
+      dom.inputPlural.removeAttribute('readonly');
+      dom.inputPlural.style.opacity = '1';
+      dom.inputPlural.style.cursor = 'text';
+      if (dom.pluralFieldHint) dom.pluralFieldHint.textContent = 'die + sustantivo';
+
+      // Traducción visible y bloqueada
+      dom.inputTranslation.value = state.currentWord.translation;
+      dom.inputTranslation.setAttribute('readonly', 'true');
+      dom.inputTranslation.style.opacity = '0.75';
+      dom.inputTranslation.style.cursor = 'default';
+      dom.translationFieldHint.textContent = '(Visible en modo medio)';
     } else {
-      // Dificultad 2: Traducción oculta, el usuario debe escribirla
+      // MODO DIFÍCIL: Escribes todo (artículo, plural y traducción).
       dom.translationHintBox.style.display = 'none';
       dom.targetTranslationHint.textContent = '';
 
+      // Plural editable
+      dom.inputPlural.value = '';
+      dom.inputPlural.removeAttribute('readonly');
+      dom.inputPlural.style.opacity = '1';
+      dom.inputPlural.style.cursor = 'text';
+      if (dom.pluralFieldHint) dom.pluralFieldHint.textContent = 'die + sustantivo';
+
+      // Traducción editable
       dom.inputTranslation.value = '';
       dom.inputTranslation.removeAttribute('readonly');
       dom.inputTranslation.style.opacity = '1';
@@ -290,16 +370,21 @@
     const expectedArticle = normalizeText(current.article);
     const expectedPlural = normalizeText(current.plural);
 
-    // Validación Artículo
+    // Validación Artículo (siempre requerida en los 3 modos)
     const articleValid = userArticle === expectedArticle;
 
-    // Validación Plural (tolerante a mayúsculas/minúsculas pero estricto en umlauts)
-    const pluralValid = userPlural === expectedPlural;
+    // Validación Plural:
+    // En 'easy', está dado/visible, por lo que se considera válido automáticamente
+    let pluralValid = true;
+    if (state.difficulty === 'medium' || state.difficulty === 'hard') {
+      pluralValid = userPlural === expectedPlural;
+    }
 
-    // Validación Traducción
+    // Validación Traducción:
+    // Solo en 'hard' se exige escribirla; en 'easy' y 'medium' está visible
     let translationValid = true;
     let userTranslation = '';
-    if (state.difficulty === 'challenge') {
+    if (state.difficulty === 'hard') {
       userTranslation = normalizeText(dom.inputTranslation.value);
       const userClean = stripSpanishArticles(userTranslation);
       const userCleanNoAccents = removeAccents(userClean);
@@ -322,10 +407,12 @@
 
     const isAllCorrect = articleValid && pluralValid && translationValid;
 
-    // Resaltar campos individuales
+    // Resaltar campos individuales según el modo activo
     setInputValidationState(dom.inputArticle, articleValid);
-    setInputValidationState(dom.inputPlural, pluralValid);
-    if (state.difficulty === 'challenge') {
+    if (state.difficulty === 'medium' || state.difficulty === 'hard') {
+      setInputValidationState(dom.inputPlural, pluralValid);
+    }
+    if (state.difficulty === 'hard') {
       setInputValidationState(dom.inputTranslation, translationValid);
     }
 
@@ -341,8 +428,7 @@
     }
     updateStatsDisplay();
 
-    // Retroalimentación visual y auditiva
-    displayFeedback(isAllCorrect, {
+    const details = {
       articleValid,
       pluralValid,
       translationValid,
@@ -352,15 +438,23 @@
       userArticle: dom.inputArticle.value.trim(),
       userPlural: dom.inputPlural.value.trim(),
       userTranslation: dom.inputTranslation.value.trim()
-    });
+    };
+
+    // Retroalimentación visual y auditiva
+    displayFeedback(isAllCorrect, details);
 
     state.evaluated = true;
 
-    // Modificar botón a "Siguiente palabra"
-    dom.btnSubmit.className = 'btn-primary btn-next';
-    dom.btnSubmitIcon.textContent = '➔';
-    dom.btnSubmitText.textContent = 'Siguiente palabra';
-    dom.btnSubmit.focus();
+    if (!isAllCorrect) {
+      // Mostrar cartel con la solución correcta antes de pasar a la siguiente palabra
+      showCorrectionModal(current, details);
+    } else {
+      // Modificar botón a "Siguiente palabra"
+      dom.btnSubmit.className = 'btn-primary btn-next';
+      dom.btnSubmitIcon.textContent = '➔';
+      dom.btnSubmitText.textContent = 'Siguiente palabra';
+      dom.btnSubmit.focus();
+    }
   }
 
   function setInputValidationState(input, isValid) {
@@ -435,6 +529,91 @@
     }
   }
 
+  // --- Cartel de Solución Correcta (Modal ante Error) ---
+  function showCorrectionModal(word, details) {
+    if (!word) return;
+    state.isShowingCorrection = true;
+
+    // Encabezado de la palabra en grande
+    dom.corrHeroNoun.textContent = word.noun;
+    dom.corrHeroArticle.textContent = word.article;
+    dom.corrHeroArticle.className = `hero-article color-${word.article}`;
+    dom.corrHeroTranslation.textContent = word.translation;
+    dom.corrCatBadge.textContent = word.category || 'Sustantivo';
+    dom.corrLevelBadge.textContent = word.level || 'A1';
+
+    // Desglose de Artículo
+    dom.corrValArticle.textContent = word.article;
+    dom.corrValArticle.className = `solution-correct-val color-${word.article}`;
+    if (details.articleValid) {
+      dom.cardArticle.className = 'solution-card is-correct';
+      dom.statusIconArticle.textContent = '✅';
+      dom.corrUserArticle.innerHTML = `<span class="correct-text">¡Correcto!</span>`;
+    } else {
+      dom.cardArticle.className = 'solution-card is-wrong';
+      dom.statusIconArticle.textContent = '❌';
+      const userText = details.userArticle ? escapeHtml(details.userArticle) : 'vacío';
+      dom.corrUserArticle.innerHTML = `Escribiste: <span class="wrong-text">${userText}</span>`;
+    }
+
+    // Desglose de Plural
+    dom.corrValPlural.textContent = `die ${word.plural}`;
+    if (state.difficulty === 'easy') {
+      dom.cardPlural.className = 'solution-card is-correct';
+      dom.statusIconPlural.textContent = 'ℹ️';
+      dom.corrUserPlural.innerHTML = `<span class="correct-text">Visible en modo fácil</span>`;
+    } else if (details.pluralValid) {
+      dom.cardPlural.className = 'solution-card is-correct';
+      dom.statusIconPlural.textContent = '✅';
+      dom.corrUserPlural.innerHTML = `<span class="correct-text">¡Correcto!</span>`;
+    } else {
+      dom.cardPlural.className = 'solution-card is-wrong';
+      dom.statusIconPlural.textContent = '❌';
+      const userText = details.userPlural ? `die ${escapeHtml(details.userPlural)}` : 'vacío';
+      dom.corrUserPlural.innerHTML = `Escribiste: <span class="wrong-text">${userText}</span>`;
+    }
+
+    // Desglose de Traducción
+    dom.corrValTrans.textContent = word.translation;
+    if (state.difficulty === 'easy' || state.difficulty === 'medium') {
+      dom.cardTrans.className = 'solution-card is-correct';
+      dom.statusIconTrans.textContent = 'ℹ️';
+      dom.corrUserTrans.innerHTML = `<span class="correct-text">Visible en modo ${state.difficulty === 'easy' ? 'fácil' : 'medio'}</span>`;
+    } else if (details.translationValid) {
+      dom.cardTrans.className = 'solution-card is-correct';
+      dom.statusIconTrans.textContent = '✅';
+      dom.corrUserTrans.innerHTML = `<span class="correct-text">¡Correcto!</span>`;
+    } else {
+      dom.cardTrans.className = 'solution-card is-wrong';
+      dom.statusIconTrans.textContent = '❌';
+      const userText = details.userTranslation ? escapeHtml(details.userTranslation) : 'vacío';
+      dom.corrUserTrans.innerHTML = `Escribiste: <span class="wrong-text">${userText}</span>`;
+    }
+
+    // Abrir modal y enfocar el botón para continuar con Enter
+    dom.modalCorrection.classList.add('active');
+    setTimeout(() => {
+      dom.btnContinueAfterError.focus();
+    }, 60);
+  }
+
+  function closeCorrectionAndAdvance() {
+    if (!state.isShowingCorrection) return;
+    state.isShowingCorrection = false;
+    dom.modalCorrection.classList.remove('active');
+    loadWord(state.currentIndex + 1);
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   // --- Actualizar Estadísticas ---
   function updateStatsDisplay() {
     dom.statStreak.textContent = state.stats.streak;
@@ -491,15 +670,25 @@
         <strong>${w.noun}</strong>
         <span>die ${w.plural}</span>
         <span style="color: var(--text-secondary);">${w.translation}</span>
+        <button type="button" class="vocab-speak-btn" data-audio="${w.article} ${w.noun}" title="Escuchar pronunciación alemana">🔊</button>
       </div>
     `).join('');
+
+    dom.vocabList.querySelectorAll('.vocab-speak-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const term = btn.getAttribute('data-audio');
+        if (term) soundManager.speak(term);
+      });
+    });
   }
 
   // --- Configuración de Eventos ---
   function setupEventListeners() {
-    // Modo Práctica / Desafío
-    dom.modePractice.addEventListener('click', () => setDifficulty('practice'));
-    dom.modeChallenge.addEventListener('click', () => setDifficulty('challenge'));
+    // Modos de dificultad (Fácil / Medio / Difícil)
+    if (dom.modeEasy) dom.modeEasy.addEventListener('click', () => setDifficulty('easy'));
+    if (dom.modeMedium) dom.modeMedium.addEventListener('click', () => setDifficulty('medium'));
+    if (dom.modeHard) dom.modeHard.addEventListener('click', () => setDifficulty('hard'));
 
     // Filtros de categoría y nivel
     dom.categorySelect.addEventListener('change', (e) => {
@@ -536,11 +725,27 @@
 
     // Botón Saltar palabra
     dom.btnSkip.addEventListener('click', () => {
+      const current = state.currentWord;
+      if (!current) return;
       state.stats.total += 1;
       state.stats.streak = 0;
-      state.mistakes.add(state.currentWord.id);
+      state.mistakes.add(current.id);
       updateStatsDisplay();
-      loadWord(state.currentIndex + 1);
+
+      const details = {
+        articleValid: false,
+        pluralValid: false,
+        translationValid: false,
+        expectedArticle: current.article,
+        expectedPlural: current.plural,
+        expectedTranslation: current.translation,
+        userArticle: dom.inputArticle.value.trim(),
+        userPlural: dom.inputPlural.value.trim(),
+        userTranslation: dom.inputTranslation.value.trim()
+      };
+      displayFeedback(false, details);
+      state.evaluated = true;
+      showCorrectionModal(current, details);
     });
 
     // Botón Pronunciar
@@ -573,8 +778,12 @@
         dom.inputArticle.value = art;
         dom.articleQuickBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        dom.inputPlural.focus();
-        state.lastActiveInput = dom.inputPlural;
+        if (state.difficulty === 'easy') {
+          dom.btnSubmit.focus();
+        } else {
+          dom.inputPlural.focus();
+          state.lastActiveInput = dom.inputPlural;
+        }
       });
     });
 
@@ -595,18 +804,19 @@
 
     // Atajos de teclado numéricos (1=der, 2=die, 3=das) cuando el foco está en el artículo
     dom.inputArticle.addEventListener('keydown', (e) => {
-      if (e.key === '1') {
+      if (e.key === '1' || e.key === '2' || e.key === '3') {
         e.preventDefault();
-        dom.inputArticle.value = 'der';
-        dom.inputPlural.focus();
-      } else if (e.key === '2') {
-        e.preventDefault();
-        dom.inputArticle.value = 'die';
-        dom.inputPlural.focus();
-      } else if (e.key === '3') {
-        e.preventDefault();
-        dom.inputArticle.value = 'das';
-        dom.inputPlural.focus();
+        const map = { '1': 'der', '2': 'die', '3': 'das' };
+        dom.inputArticle.value = map[e.key];
+        dom.articleQuickBtns.forEach(b => {
+          b.classList.toggle('active', b.getAttribute('data-art') === map[e.key]);
+        });
+        if (state.difficulty === 'easy') {
+          dom.btnSubmit.focus();
+        } else {
+          dom.inputPlural.focus();
+          state.lastActiveInput = dom.inputPlural;
+        }
       }
     });
 
@@ -622,22 +832,37 @@
 
     // Atajos globales
     document.addEventListener('keydown', (e) => {
-      // Enter para avanzar si ya está evaluado y el foco no está en un input
-      if (e.key === 'Enter' && state.evaluated) {
-        checkAnswers();
+      if (e.key === 'Enter') {
+        if (state.isShowingCorrection) {
+          e.preventDefault();
+          closeCorrectionAndAdvance();
+          return;
+        }
+        if (state.evaluated) {
+          e.preventDefault();
+          checkAnswers();
+          return;
+        }
       }
       // Escape cierra modales
       if (e.key === 'Escape') {
-        dom.modalVercel.classList.remove('active');
+        if (state.isShowingCorrection) {
+          closeCorrectionAndAdvance();
+        }
         dom.modalVocab.classList.remove('active');
       }
     });
 
-    // Modales
-    dom.btnVercelModal.addEventListener('click', () => {
-      dom.modalVercel.classList.add('active');
+    // Modal de Corrección
+    dom.btnContinueAfterError.addEventListener('click', closeCorrectionAndAdvance);
+    dom.btnCloseCorrection.addEventListener('click', closeCorrectionAndAdvance);
+    dom.corrBtnSpeak.addEventListener('click', () => {
+      if (state.currentWord) {
+        soundManager.speak(`${state.currentWord.article} ${state.currentWord.noun}`);
+      }
     });
 
+    // Modal de Vocabulario
     dom.btnVocabModal.addEventListener('click', () => {
       dom.modalVocab.classList.add('active');
       dom.vocabSearch.focus();
@@ -646,15 +871,25 @@
     dom.closeModalBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-modal');
-        document.getElementById(id).classList.remove('active');
+        if (id === 'modal-correction') {
+          closeCorrectionAndAdvance();
+        } else {
+          const m = document.getElementById(id);
+          if (m) m.classList.remove('active');
+        }
       });
     });
 
     // Cerrar modal al hacer click fuera del contenido
-    [dom.modalVercel, dom.modalVocab].forEach(modal => {
+    [dom.modalCorrection, dom.modalVocab].forEach(modal => {
+      if (!modal) return;
       modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-          modal.classList.remove('active');
+          if (modal === dom.modalCorrection) {
+            closeCorrectionAndAdvance();
+          } else {
+            modal.classList.remove('active');
+          }
         }
       });
     });
