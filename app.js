@@ -64,8 +64,6 @@
     cardProgress: document.getElementById('card-progress'),
     targetNoun: document.getElementById('target-noun'),
     btnPronounce: document.getElementById('btn-pronounce'),
-    translationHintBox: document.getElementById('translation-hint-box'),
-    targetTranslationHint: document.getElementById('target-translation-hint'),
 
     // Form inputs
     form: document.getElementById('practice-form'),
@@ -281,10 +279,7 @@
     if (!state.currentWord) return;
 
     if (state.difficulty === 'easy') {
-      // MODO FÁCIL: Solamente escribes el artículo. Plural y traducción visibles.
-      dom.translationHintBox.style.display = 'inline-flex';
-      dom.targetTranslationHint.textContent = state.currentWord.translation;
-
+      // MODO FÁCIL: Solamente escribes el artículo. Plural y traducción visibles en sus campos.
       // Plural visible y bloqueado
       dom.inputPlural.value = state.currentWord.plural;
       dom.inputPlural.setAttribute('readonly', 'true');
@@ -292,17 +287,14 @@
       dom.inputPlural.style.cursor = 'default';
       if (dom.pluralFieldHint) dom.pluralFieldHint.textContent = '(Visible en modo fácil)';
 
-      // Traducción visible y bloqueada
+      // Traducción visible y bloqueada únicamente en su campo
       dom.inputTranslation.value = state.currentWord.translation;
       dom.inputTranslation.setAttribute('readonly', 'true');
       dom.inputTranslation.style.opacity = '0.75';
       dom.inputTranslation.style.cursor = 'default';
-      dom.translationFieldHint.textContent = '(Visible en modo fácil)';
+      if (dom.translationFieldHint) dom.translationFieldHint.textContent = '(Visible en modo fácil)';
     } else if (state.difficulty === 'medium') {
-      // MODO MEDIO: Escribes el artículo y el plural. Traducción visible.
-      dom.translationHintBox.style.display = 'inline-flex';
-      dom.targetTranslationHint.textContent = state.currentWord.translation;
-
+      // MODO MEDIO: Escribes el artículo y el plural. Traducción visible en su campo.
       // Plural editable
       dom.inputPlural.value = '';
       dom.inputPlural.removeAttribute('readonly');
@@ -310,17 +302,14 @@
       dom.inputPlural.style.cursor = 'text';
       if (dom.pluralFieldHint) dom.pluralFieldHint.textContent = 'die + sustantivo';
 
-      // Traducción visible y bloqueada
+      // Traducción visible y bloqueada únicamente en su campo
       dom.inputTranslation.value = state.currentWord.translation;
       dom.inputTranslation.setAttribute('readonly', 'true');
       dom.inputTranslation.style.opacity = '0.75';
       dom.inputTranslation.style.cursor = 'default';
-      dom.translationFieldHint.textContent = '(Visible en modo medio)';
+      if (dom.translationFieldHint) dom.translationFieldHint.textContent = '(Visible en modo medio)';
     } else {
       // MODO DIFÍCIL: Escribes todo (artículo, plural y traducción).
-      dom.translationHintBox.style.display = 'none';
-      dom.targetTranslationHint.textContent = '';
-
       // Plural editable
       dom.inputPlural.value = '';
       dom.inputPlural.removeAttribute('readonly');
@@ -333,7 +322,7 @@
       dom.inputTranslation.removeAttribute('readonly');
       dom.inputTranslation.style.opacity = '1';
       dom.inputTranslation.style.cursor = 'text';
-      dom.translationFieldHint.textContent = '(Escribe en español)';
+      if (dom.translationFieldHint) dom.translationFieldHint.textContent = '(Escribe en español)';
     }
   }
 
@@ -483,62 +472,23 @@
 
   // --- Mostrar Retroalimentación ---
   function displayFeedback(isCorrect, details) {
-    dom.feedbackBox.className = 'feedback-box visible';
-
     if (isCorrect) {
-      dom.feedbackBox.classList.add('success');
+      // No mostrar el rectángulo verde inferior a petición del usuario
+      dom.feedbackBox.className = 'feedback-box';
+      dom.feedbackBox.innerHTML = '';
       soundManager.playSuccess();
 
       // Celebración si hay racha notable
       if (state.stats.streak > 0 && state.stats.streak % 5 === 0) {
         soundManager.playStreak();
       }
-
-      const genderClass = `color-${details.expectedArticle}`;
-      dom.feedbackHeader.innerHTML = `<span>🎉 ¡Excelente! Respuesta 100% correcta</span>`;
-      dom.feedbackDetails.innerHTML = `
-        <div style="font-size: 1.05rem; margin-top: 0.25rem;">
-          <span class="${genderClass}">${details.expectedArticle}</span> 
-          <strong>${state.currentWord.noun}</strong>, 
-          <span>die ${details.expectedPlural}</span> 
-          <em style="color: var(--text-secondary);">(${state.currentWord.translation})</em>
-        </div>
-      `;
     } else {
-      dom.feedbackBox.classList.add('error');
+      // En fallo, la corrección completa se muestra en el cartel modal (#modal-correction)
+      dom.feedbackBox.className = 'feedback-box';
+      dom.feedbackBox.innerHTML = '';
       dom.practiceCard.classList.add('shake');
       setTimeout(() => dom.practiceCard.classList.remove('shake'), 400);
       soundManager.playError();
-
-      dom.feedbackHeader.innerHTML = `<span>⚠️ Revisa la solución correcta:</span>`;
-
-      const genderClass = `color-${details.expectedArticle}`;
-      let breakdownHtml = `
-        <div class="answer-comparison">
-          <div class="comparison-item">
-            <span class="comparison-label">Artículo:</span>
-            <span class="comparison-correct ${genderClass}">${details.expectedArticle}</span>
-            ${!details.articleValid ? `<span class="comparison-user">Tú: ${details.userArticle || '—'}</span>` : '<span style="color:#10b981;">✓</span>'}
-          </div>
-          <div class="comparison-item">
-            <span class="comparison-label">Plural:</span>
-            <span class="comparison-correct">die ${details.expectedPlural}</span>
-            ${!details.pluralValid ? `<span class="comparison-user">Tú: ${details.userPlural || '—'}</span>` : '<span style="color:#10b981;">✓</span>'}
-          </div>
-      `;
-
-      if (state.difficulty === 'challenge') {
-        breakdownHtml += `
-          <div class="comparison-item">
-            <span class="comparison-label">Traducción:</span>
-            <span class="comparison-correct">${details.expectedTranslation}</span>
-            ${!details.translationValid ? `<span class="comparison-user">Tú: ${details.userTranslation || '—'}</span>` : '<span style="color:#10b981;">✓</span>'}
-          </div>
-        `;
-      }
-
-      breakdownHtml += `</div>`;
-      dom.feedbackDetails.innerHTML = breakdownHtml;
     }
   }
 
