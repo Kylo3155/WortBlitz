@@ -17,6 +17,7 @@
     currentWord: null,
     evaluated: false,
     isShowingCorrection: false,
+    correctionOpenedAt: 0,
     
     mistakes: new Set(), // IDs de palabras falladas
     
@@ -352,8 +353,20 @@
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
+  let lastCheckTime = 0;
+
   // --- Validación de Respuestas ---
   function checkAnswers() {
+    if (state.isShowingCorrection) {
+      return;
+    }
+
+    const now = Date.now();
+    if (now - lastCheckTime < 150) {
+      return;
+    }
+    lastCheckTime = now;
+
     if (state.evaluated) {
       // Si ya fue evaluado, el Enter avanza a la siguiente palabra
       loadWord(state.currentIndex + 1);
@@ -443,12 +456,12 @@
     // Retroalimentación visual y auditiva
     displayFeedback(isAllCorrect, details);
 
-    state.evaluated = true;
-
     if (!isAllCorrect) {
+      state.evaluated = false;
       // Mostrar cartel con la solución correcta antes de pasar a la siguiente palabra
       showCorrectionModal(current, details);
     } else {
+      state.evaluated = true;
       // Modificar botón a "Siguiente palabra"
       dom.btnSubmit.className = 'btn-primary btn-next';
       dom.btnSubmitIcon.textContent = '➔';
@@ -533,6 +546,12 @@
   function showCorrectionModal(word, details) {
     if (!word) return;
     state.isShowingCorrection = true;
+    state.correctionOpenedAt = Date.now();
+
+    // Desenfocar cualquier input activo para evitar eventos fantasma de teclado
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
 
     // Encabezado de la palabra en grande
     dom.corrHeroNoun.textContent = word.noun;
@@ -590,16 +609,23 @@
       dom.corrUserTrans.innerHTML = `Escribiste: <span class="wrong-text">${userText}</span>`;
     }
 
-    // Abrir modal y enfocar el botón para continuar con Enter
+    // Abrir modal y enfocar el botón para continuar con Enter tras pequeña pausa
     dom.modalCorrection.classList.add('active');
     setTimeout(() => {
-      dom.btnContinueAfterError.focus();
-    }, 60);
+      if (state.isShowingCorrection && dom.btnContinueAfterError) {
+        dom.btnContinueAfterError.focus();
+      }
+    }, 150);
   }
 
-  function closeCorrectionAndAdvance() {
+  function closeCorrectionAndAdvance(force = false) {
     if (!state.isShowingCorrection) return;
+    // Si no es forzado, evitar que se cierre si pasaron menos de 350ms (por si Enter rebota)
+    if (!force && Date.now() - state.correctionOpenedAt < 350) {
+      return;
+    }
     state.isShowingCorrection = false;
+    state.correctionOpenedAt = 0;
     dom.modalCorrection.classList.remove('active');
     loadWord(state.currentIndex + 1);
   }
@@ -717,9 +743,14 @@
     });
 
     // Botón Enviar / Siguiente
-    dom.btnSubmit.addEventListener('click', checkAnswers);
+    dom.btnSubmit.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      checkAnswers();
+    });
     dom.form.addEventListener('submit', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       checkAnswers();
     });
 
@@ -744,7 +775,7 @@
         userTranslation: dom.inputTranslation.value.trim()
       };
       displayFeedback(false, details);
-      state.evaluated = true;
+      state.evaluated = false;
       showCorrectionModal(current, details);
     });
 
@@ -825,6 +856,7 @@
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
+          e.stopPropagation();
           checkAnswers();
         }
       });
@@ -835,27 +867,41 @@
       if (e.key === 'Enter') {
         if (state.isShowingCorrection) {
           e.preventDefault();
-          closeCorrectionAndAdvance();
+          e.stopPropagation();
+          // Ignorar si el modal acaba de abrirse (protección contra rebote o propagación de tecla)
+          if (Date.now() - state.correctionOpenedAt < 350) {
+            return;
+          }
+          closeCorrectionAndAdvance(true);
           return;
         }
         if (state.evaluated) {
           e.preventDefault();
-          checkAnswers();
+          e.stopPropagation();
+          loadWord(state.currentIndex + 1);
           return;
         }
       }
       // Escape cierra modales
       if (e.key === 'Escape') {
         if (state.isShowingCorrection) {
-          closeCorrectionAndAdvance();
+          closeCorrectionAndAdvance(true);
         }
         dom.modalVocab.classList.remove('active');
       }
     });
 
     // Modal de Corrección
-    dom.btnContinueAfterError.addEventListener('click', closeCorrectionAndAdvance);
-    dom.btnCloseCorrection.addEventListener('click', closeCorrectionAndAdvance);
+    dom.btnContinueAfterError.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeCorrectionAndAdvance(true);
+    });
+    dom.btnCloseCorrection.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeCorrectionAndAdvance(true);
+    });
     dom.corrBtnSpeak.addEventListener('click', () => {
       if (state.currentWord) {
         soundManager.speak(`${state.currentWord.article} ${state.currentWord.noun}`);
@@ -869,10 +915,11 @@
     });
 
     dom.closeModalBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
         const id = btn.getAttribute('data-modal');
         if (id === 'modal-correction') {
-          closeCorrectionAndAdvance();
+          closeCorrectionAndAdvance(true);
         } else {
           const m = document.getElementById(id);
           if (m) m.classList.remove('active');
@@ -886,7 +933,7 @@
       modal.addEventListener('click', (e) => {
         if (e.target === modal) {
           if (modal === dom.modalCorrection) {
-            closeCorrectionAndAdvance();
+            closeCorrectionAndAdvance(true);
           } else {
             modal.classList.remove('active');
           }
