@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WortMeister - Aprende Sustantivos en Alemán</title>
+  <meta name="description" content="Practica los artículos (der, die, das), las formas plurales y las traducciones de sustantivos en alemán con dos niveles de dificultad.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🇩🇪</text></svg>">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">🇩🇪</div>
+        <div class="brand-text">
+          <h1>WortMeister</h1>
+          <span class="brand-badge">Sustantivos en Alemán</span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <button id="btn-vocab-modal" class="btn-secondary" title="Ver lista completa de vocabulario">
+          <span>📚</span> Vocabulario
+        </button>
+        <button id="btn-vercel-modal" class="btn-secondary" title="Guía para desplegar en Vercel">
+          <span>▲</span> Desplegar
+        </button>
+        <button id="btn-sound-toggle" class="icon-btn" title="Activar/Silenciar sonido">
+          <span id="sound-icon">🔊</span>
+        </button>
+        <button id="btn-theme-toggle" class="icon-btn" title="Alternar tema claro/oscuro">
+          <span id="theme-icon">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats Ribbon -->
+    <section class="stats-ribbon" aria-label="Estadísticas de sesión">
+      <div class="stat-card streak">
+        <span class="stat-label">🔥 Racha</span>
+        <span class="stat-value" id="stat-streak">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">✅ Aciertos</span>
+        <span class="stat-value" id="stat-correct">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">🎯 Precisión</span>
+        <span class="stat-value" id="stat-accuracy">100%</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">📖 Total</span>
+        <span class="stat-value" id="stat-total">0</span>
+      </div>
+    </section>
+
+    <!-- Controls Panel (Difficulty & Filters) -->
+    <section class="controls-panel">
+      <!-- Difficulty Tabs -->
+      <div class="mode-selector" role="radiogroup" aria-label="Nivel de dificultad">
+        <button id="mode-practice" class="mode-btn active" role="radio" aria-checked="true">
+          <span class="mode-indicator"></span>
+          <span>Modo Práctica</span>
+          <small style="opacity: 0.7; font-weight: normal;">(Traducción visible)</small>
+        </button>
+        <button id="mode-challenge" class="mode-btn" role="radio" aria-checked="false">
+          <span class="mode-indicator"></span>
+          <span>Modo Desafío</span>
+          <small style="opacity: 0.7; font-weight: normal;">(Escribes todo)</small>
+        </button>
+      </div>
+
+      <!-- Filters & Review Mode -->
+      <div class="filter-row">
+        <div class="filter-group">
+          <label for="category-select" style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">Categoría:</label>
+          <select id="category-select" class="filter-select">
+            <option value="all">Todas las categorías</option>
+            <option value="Personas">Personas y Familia</option>
+            <option value="Animales">Animales</option>
+            <option value="Comida">Comida y Bebida</option>
+            <option value="Hogar">Hogar y Objetos</option>
+            <option value="Ciudad">Ciudad y Transporte</option>
+            <option value="Naturaleza">Naturaleza</option>
+            <option value="Cuerpo">Cuerpo Humano</option>
+            <option value="Ropa">Ropa</option>
+            <option value="Estudio">Estudio</option>
+            <option value="Vida Diaria">Vida Diaria</option>
+          </select>
+
+          <label for="level-select" style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; margin-left: 0.5rem;">Nivel:</label>
+          <select id="level-select" class="filter-select">
+            <option value="all">Todos (A1-A2)</option>
+            <option value="A1">A1 (Básico)</option>
+            <option value="A2">A2 (Intermedio)</option>
+          </select>
+        </div>
+
+        <button id="btn-review-mistakes" class="review-toggle-btn" title="Repasar palabras falladas">
+          <span>⚠️</span> Repasar fallos (<span id="mistakes-count">0</span>)
+        </button>
+      </div>
+    </section>
+
+    <!-- Main Flashcard Container -->
+    <main class="practice-card" id="practice-card">
+      <div class="card-top">
+        <div class="tag-group">
+          <span class="badge" id="card-category">Animales</span>
+          <span class="badge level" id="card-level">A1</span>
+          <span class="badge" id="card-mode-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);">Práctica</span>
+        </div>
+        <div class="card-progress" id="card-progress">Palabra 1 de 120</div>
+      </div>
+
+      <!-- Word Display -->
+      <div class="word-presentation">
+        <div class="noun-display-row">
+          <span class="target-noun" id="target-noun">Hund</span>
+          <button id="btn-pronounce" class="audio-btn" title="Escuchar pronunciación nativa en alemán" type="button">
+            🔊
+          </button>
+        </div>
+
+        <div id="translation-hint-box" class="translation-hint-box">
+          <span class="hint-label">Traducción:</span>
+          <span class="hint-text" id="target-translation-hint">perro</span>
+        </div>
+      </div>
+
+      <!-- Inputs Form -->
+      <form id="practice-form" class="practice-form" autocomplete="off" onsubmit="return false;">
+        <div class="input-grid">
+          
+          <!-- Field 1: Article -->
+          <div class="form-group">
+            <label class="form-label" for="input-article">
+              <span>Artículo</span>
+              <span class="label-hint">[1/2/3]</span>
+            </label>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                id="input-article" 
+                class="input-field" 
+                placeholder="der / die / das"
+                autocapitalize="none"
+                spellcheck="false"
+                required
+              >
+            </div>
+            <!-- Quick Article Buttons -->
+            <div class="article-quick-picker" aria-label="Selección rápida de artículo">
+              <button type="button" class="article-quick-btn btn-der" data-art="der">der</button>
+              <button type="button" class="article-quick-btn btn-die" data-art="die">die</button>
+              <button type="button" class="article-quick-btn btn-das" data-art="das">das</button>
+            </div>
+          </div>
+
+          <!-- Field 2: Plural Form -->
+          <div class="form-group">
+            <label class="form-label" for="input-plural">
+              <span>Forma Plural</span>
+              <span class="label-hint">die + sustantivo</span>
+            </label>
+            <div class="input-wrapper has-prefix">
+              <span class="input-prefix">die</span>
+              <input 
+                type="text" 
+                id="input-plural" 
+                class="input-field" 
+                placeholder="ej: Hunde"
+                spellcheck="false"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Field 3: Spanish Translation -->
+          <div class="form-group">
+            <label class="form-label" for="input-translation">
+              <span>Traducción</span>
+              <span class="label-hint" id="translation-field-hint">(Español)</span>
+            </label>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                id="input-translation" 
+                class="input-field" 
+                placeholder="ej: perro"
+                spellcheck="false"
+                required
+              >
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Virtual Umlauts Bar -->
+        <div class="umlaut-bar" aria-label="Teclado de caracteres especiales alemanes">
+          <span class="umlaut-label">Caracteres alemanes:</span>
+          <button type="button" class="umlaut-key" data-char="ä">ä</button>
+          <button type="button" class="umlaut-key" data-char="ö">ö</button>
+          <button type="button" class="umlaut-key" data-char="ü">ü</button>
+          <button type="button" class="umlaut-key" data-char="ß">ß</button>
+          <button type="button" class="umlaut-key" data-char="Ä">Ä</button>
+          <button type="button" class="umlaut-key" data-char="Ö">Ö</button>
+          <button type="button" class="umlaut-key" data-char="Ü">Ü</button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="card-actions">
+          <button type="submit" id="btn-submit" class="btn-primary">
+            <span id="btn-submit-icon">✓</span>
+            <span id="btn-submit-text">Verificar</span>
+            <kbd style="opacity: 0.6; font-size: 0.8rem; background: rgba(0,0,0,0.25); padding: 2px 6px; border-radius: 4px;">Enter</kbd>
+          </button>
+          <button type="button" id="btn-skip" class="btn-skip">
+            Saltar palabra
+          </button>
+        </div>
+
+        <!-- Feedback Box -->
+        <div id="feedback-box" class="feedback-box" role="alert">
+          <div class="feedback-header" id="feedback-header"></div>
+          <div class="feedback-details" id="feedback-details"></div>
+        </div>
+
+      </form>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Tip: Usa <kbd>Enter</kbd> para verificar y avanzar, <kbd>Tab</kbd> para moverte entre campos, y <kbd>1, 2, 3</kbd> para seleccionar der, die o das.</p>
+    </footer>
+
+  </div>
+
+  <!-- Modal 1: ¿Cómo publicar en Vercel? -->
+  <div id="modal-vercel" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-vercel-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-vercel-title">🚀 Cómo hostear tu página gratis en Vercel</h2>
+        <button class="icon-btn close-modal" data-modal="modal-vercel">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Esta aplicación está lista para Vercel sin ninguna configuración previa. Sigue cualquiera de estas dos opciones gratuitas:</p>
+        
+        <div class="step-card">
+          <h4>1. Subir a GitHub y conectar a Vercel (Recomendado)</h4>
+          <ol style="margin-left: 1.25rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.35rem;">
+            <li>Crea un repositorio en <a href="https://github.com" target="_blank" rel="noopener">GitHub</a> con esta carpeta.</li>
+            <li>Inicia sesión en <a href="https://vercel.com" target="_blank" rel="noopener">Vercel.com</a>.</li>
+            <li>Haz clic en <strong>"Add New Project"</strong> y selecciona tu repositorio.</li>
+            <li>Vercel detectará el archivo <code>index.html</code> automáticamente. Haz clic en <strong>"Deploy"</strong>.</li>
+            <li>¡En 5 segundos tendrás tu URL pública con HTTPS y actualizaciones automáticas!</li>
+          </ol>
+        </div>
+
+        <div class="step-card">
+          <h4>2. Despliegue con Vercel CLI (Desde la consola)</h4>
+          <p>Si tienes Node.js instalado, puedes ejecutar en esta carpeta:</p>
+          <pre class="code-badge">npx vercel</pre>
+          <p style="margin-top: 0.35rem;">Sigue las preguntas rápidas en la consola y tu sitio quedará en línea al instante.</p>
+        </div>
+
+        <div class="step-card">
+          <h4>3. Archivo vercel.json incluido</h4>
+          <p>Ya incluimos un archivo <code>vercel.json</code> en el proyecto con las cabeceras de caché óptimas para archivos estáticos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Explorador de Vocabulario -->
+  <div id="modal-vocab" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-vocab-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-vocab-title">📚 Banco de Vocabulario (<span id="modal-vocab-total">0</span> palabras)</h2>
+        <button class="icon-btn close-modal" data-modal="modal-vocab">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="vocab-search" class="vocab-search-input" placeholder="Buscar por palabra en alemán o español...">
+        <div id="vocab-list" class="vocab-list">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="words.js"></script>
+  <script src="audio.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
