@@ -1,6 +1,6 @@
 # WortBlitz ⚡🇩🇪 - Práctica de Sustantivos en Alemán
 
-Una aplicación web moderna, interactiva y responsiva diseñada para dominar el género (**der**, **die**, **das**), la **forma plural** y la **traducción** de más de 120 sustantivos esenciales en alemán.
+Una aplicación web moderna, interactiva y responsiva diseñada para dominar el género (**der**, **die**, **das**), la **forma plural** y la **traducción** de los 200 sustantivos más usados en alemán (niveles A1 y A2 oficiales).
 
 ## ✨ Características
 
@@ -16,7 +16,7 @@ Una aplicación web moderna, interactiva y responsiva diseñada para dominar el 
 - 📊 **Estadísticas en tiempo real**: Contador de racha actual, aciertos, precisión porcentual y total practicado.
 - ⚠️ **Modo repaso de fallos**: Guarda automáticamente las palabras falladas en la sesión para repasarlas individualmente.
 - 🌓 **Tema Oscuro y Claro**: Diseño adaptativo con estética moderna, sombras suaves y contrastes optimizados.
-- 📚 **Explorador de vocabulario**: Buscador con los 120 sustantivos categorizados por temática y nivel (A1 / A2).
+- 📚 **Explorador de vocabulario**: Buscador con los 200 sustantivos categorizados por temática y nivel (A1 / A2).
 
 ---
 

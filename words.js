@@ -1,9 +1,12 @@
 /**
- * Banco de vocabulario de sustantivos en alemán
- * Con artículo, sustantivo singular, plural, traducción en español, sinónimos aceptados, categoría y nivel CEFR.
+ * WortBlitz ⚡ - Banco de Vocabulario Oficial A1 & A2 (Goethe-Institut / CEFR)
+ * Vocabulario de alta frecuencia: género (der, die, das), plural y traducciones en español.
  */
+
 const GERMAN_NOUNS = [
-  // --- PERSONAS Y FAMILIA ---
+  // ==========================================
+  // 1. PERSONAS Y FAMILIA (Menschen & Familie)
+  // ==========================================
   {
     id: 1,
     noun: "Mann",
@@ -30,52 +33,72 @@ const GERMAN_NOUNS = [
     article: "das",
     plural: "Kinder",
     translation: "niño",
-    acceptedTranslations: ["niño", "niña", "hijo", "hija", "el niño", "la niña", "chico"],
+    acceptedTranslations: ["niño", "el niño", "niña", "hijo", "hija", "chico"],
     category: "Personas",
     level: "A1"
   },
   {
     id: 4,
-    noun: "Freund",
-    article: "der",
-    plural: "Freunde",
-    translation: "amigo",
-    acceptedTranslations: ["amigo", "el amigo", "novio"],
+    noun: "Baby",
+    article: "das",
+    plural: "Babys",
+    translation: "bebé",
+    acceptedTranslations: ["bebé", "el bebé", "bebe"],
     category: "Personas",
     level: "A1"
   },
   {
     id: 5,
-    noun: "Freundin",
+    noun: "Familie",
     article: "die",
-    plural: "Freundinnen",
-    translation: "amiga",
-    acceptedTranslations: ["amiga", "la amiga", "novia"],
+    plural: "Familien",
+    translation: "familia",
+    acceptedTranslations: ["familia", "la familia"],
     category: "Personas",
     level: "A1"
   },
   {
     id: 6,
-    noun: "Mutter",
-    article: "die",
-    plural: "Mütter",
-    translation: "madre",
-    acceptedTranslations: ["madre", "la madre", "mamá"],
+    noun: "Vater",
+    article: "der",
+    plural: "Väter",
+    translation: "padre",
+    acceptedTranslations: ["padre", "el padre", "papá", "papa"],
     category: "Personas",
     level: "A1"
   },
   {
     id: 7,
-    noun: "Vater",
-    article: "der",
-    plural: "Väter",
-    translation: "padre",
-    acceptedTranslations: ["padre", "el padre", "papá"],
+    noun: "Mutter",
+    article: "die",
+    plural: "Mütter",
+    translation: "madre",
+    acceptedTranslations: ["madre", "la madre", "mamá", "mama"],
     category: "Personas",
     level: "A1"
   },
   {
     id: 8,
+    noun: "Sohn",
+    article: "der",
+    plural: "Söhne",
+    translation: "hijo",
+    acceptedTranslations: ["hijo", "el hijo"],
+    category: "Personas",
+    level: "A1"
+  },
+  {
+    id: 9,
+    noun: "Tochter",
+    article: "die",
+    plural: "Töchter",
+    translation: "hija",
+    acceptedTranslations: ["hija", "la hija"],
+    category: "Personas",
+    level: "A1"
+  },
+  {
+    id: 10,
     noun: "Bruder",
     article: "der",
     plural: "Brüder",
@@ -85,7 +108,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 9,
+    id: 11,
     noun: "Schwester",
     article: "die",
     plural: "Schwestern",
@@ -95,7 +118,57 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 10,
+    id: 12,
+    noun: "Freund",
+    article: "der",
+    plural: "Freunde",
+    translation: "amigo",
+    acceptedTranslations: ["amigo", "el amigo", "novio"],
+    category: "Personas",
+    level: "A1"
+  },
+  {
+    id: 13,
+    noun: "Freundin",
+    article: "die",
+    plural: "Freundinnen",
+    translation: "amiga",
+    acceptedTranslations: ["amiga", "la amiga", "novia"],
+    category: "Personas",
+    level: "A1"
+  },
+  {
+    id: 14,
+    noun: "Kollege",
+    article: "der",
+    plural: "Kollegen",
+    translation: "compañero de trabajo",
+    acceptedTranslations: ["compañero de trabajo", "colega", "el colega", "compañero"],
+    category: "Personas",
+    level: "A2"
+  },
+  {
+    id: 15,
+    noun: "Kollegin",
+    article: "die",
+    plural: "Kolleginnen",
+    translation: "compañera de trabajo",
+    acceptedTranslations: ["compañera de trabajo", "colega", "la colega", "compañera"],
+    category: "Personas",
+    level: "A2"
+  },
+  {
+    id: 16,
+    noun: "Nachbar",
+    article: "der",
+    plural: "Nachbarn",
+    translation: "vecino",
+    acceptedTranslations: ["vecino", "el vecino"],
+    category: "Personas",
+    level: "A2"
+  },
+  {
+    id: 17,
     noun: "Lehrer",
     article: "der",
     plural: "Lehrer",
@@ -105,17 +178,17 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 11,
+    id: 18,
     noun: "Arzt",
     article: "der",
     plural: "Ärzte",
     translation: "médico",
-    acceptedTranslations: ["médico", "el médico", "medico", "doctor"],
+    acceptedTranslations: ["médico", "medico", "el médico", "doctor"],
     category: "Personas",
     level: "A1"
   },
   {
-    id: 12,
+    id: 19,
     noun: "Student",
     article: "der",
     plural: "Studenten",
@@ -124,10 +197,32 @@ const GERMAN_NOUNS = [
     category: "Personas",
     level: "A1"
   },
-
-  // --- ANIMALES ---
   {
-    id: 13,
+    id: 20,
+    noun: "Mädchen",
+    article: "das",
+    plural: "Mädchen",
+    translation: "chica",
+    acceptedTranslations: ["chica", "niña", "la chica", "la niña", "muchacha"],
+    category: "Personas",
+    level: "A1"
+  },
+  {
+    id: 21,
+    noun: "Junge",
+    article: "der",
+    plural: "Jungen",
+    translation: "chico",
+    acceptedTranslations: ["chico", "niño", "el chico", "el niño", "muchacho"],
+    category: "Personas",
+    level: "A1"
+  },
+
+  // ==========================================
+  // 2. ANIMALES (Tiere)
+  // ==========================================
+  {
+    id: 22,
     noun: "Hund",
     article: "der",
     plural: "Hunde",
@@ -137,17 +232,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 14,
+    id: 23,
     noun: "Katze",
     article: "die",
     plural: "Katzen",
     translation: "gato",
-    acceptedTranslations: ["gato", "gata", "el gato", "la gata"],
+    acceptedTranslations: ["gato", "la gata", "el gato", "gata"],
     category: "Animales",
     level: "A1"
   },
   {
-    id: 15,
+    id: 24,
+    noun: "Vogel",
+    article: "der",
+    plural: "Vögel",
+    translation: "pájaro",
+    acceptedTranslations: ["pájaro", "pajaro", "el pájaro", "ave"],
+    category: "Animales",
+    level: "A1"
+  },
+  {
+    id: 25,
     noun: "Pferd",
     article: "das",
     plural: "Pferde",
@@ -157,17 +262,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 16,
-    noun: "Vogel",
-    article: "der",
-    plural: "Vögel",
-    translation: "pájaro",
-    acceptedTranslations: ["pájaro", "el pájaro", "ave", "pajaro"],
-    category: "Animales",
-    level: "A1"
-  },
-  {
-    id: 17,
+    id: 26,
     noun: "Fisch",
     article: "der",
     plural: "Fische",
@@ -177,7 +272,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 18,
+    id: 27,
     noun: "Kuh",
     article: "die",
     plural: "Kühe",
@@ -187,27 +282,37 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
   {
-    id: 19,
+    id: 28,
     noun: "Schwein",
     article: "das",
     plural: "Schweine",
     translation: "cerdo",
-    acceptedTranslations: ["cerdo", "el cerdo", "chancho", "puerco"],
+    acceptedTranslations: ["cerdo", "el cerdo", "puerco", "chancho"],
     category: "Animales",
     level: "A2"
   },
   {
-    id: 20,
+    id: 29,
+    noun: "Schaf",
+    article: "das",
+    plural: "Schafe",
+    translation: "oveja",
+    acceptedTranslations: ["oveja", "la oveja"],
+    category: "Animales",
+    level: "A2"
+  },
+  {
+    id: 30,
     noun: "Maus",
     article: "die",
     plural: "Mäuse",
     translation: "ratón",
-    acceptedTranslations: ["ratón", "el ratón", "raton", "rata"],
+    acceptedTranslations: ["ratón", "raton", "el ratón", "rata"],
     category: "Animales",
     level: "A2"
   },
   {
-    id: 21,
+    id: 31,
     noun: "Bär",
     article: "der",
     plural: "Bären",
@@ -217,9 +322,11 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
 
-  // --- COMIDA Y BEBIDA ---
+  // ==========================================
+  // 3. COMIDA Y BEBIDA (Essen & Trinken)
+  // ==========================================
   {
-    id: 22,
+    id: 32,
     noun: "Apfel",
     article: "der",
     plural: "Äpfel",
@@ -229,7 +336,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 23,
+    id: 33,
     noun: "Banane",
     article: "die",
     plural: "Bananen",
@@ -239,7 +346,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 24,
+    id: 34,
     noun: "Brot",
     article: "das",
     plural: "Brote",
@@ -249,67 +356,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 25,
-    noun: "Wasser",
+    id: 35,
+    noun: "Brötchen",
     article: "das",
-    plural: "Wasser",
-    translation: "agua",
-    acceptedTranslations: ["agua", "el agua"],
+    plural: "Brötchen",
+    translation: "panecillo",
+    acceptedTranslations: ["panecillo", "el panecillo", "bollo"],
     category: "Comida",
     level: "A1"
   },
   {
-    id: 26,
-    noun: "Kaffee",
-    article: "der",
-    plural: "Kaffees",
-    translation: "café",
-    acceptedTranslations: ["café", "el café", "cafe"],
-    category: "Comida",
-    level: "A1"
-  },
-  {
-    id: 27,
-    noun: "Tee",
-    article: "der",
-    plural: "Tees",
-    translation: "té",
-    acceptedTranslations: ["té", "el té", "te"],
-    category: "Comida",
-    level: "A1"
-  },
-  {
-    id: 28,
-    noun: "Milch",
+    id: 36,
+    noun: "Butter",
     article: "die",
-    plural: "Milch",
-    translation: "leche",
-    acceptedTranslations: ["leche", "la leche"],
+    plural: "Butter",
+    translation: "mantequilla",
+    acceptedTranslations: ["mantequilla", "la mantequilla", "manteca"],
     category: "Comida",
     level: "A1"
   },
   {
-    id: 29,
-    noun: "Käse",
-    article: "der",
-    plural: "Käse",
-    translation: "queso",
-    acceptedTranslations: ["queso", "el queso"],
-    category: "Comida",
-    level: "A1"
-  },
-  {
-    id: 30,
-    noun: "Fleisch",
-    article: "das",
-    plural: "Fleisch",
-    translation: "carne",
-    acceptedTranslations: ["carne", "la carne"],
-    category: "Comida",
-    level: "A1"
-  },
-  {
-    id: 31,
+    id: 37,
     noun: "Ei",
     article: "das",
     plural: "Eier",
@@ -319,47 +386,47 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 32,
-    noun: "Bier",
-    article: "das",
-    plural: "Biere",
-    translation: "cerveza",
-    acceptedTranslations: ["cerveza", "la cerveza"],
+    id: 38,
+    noun: "Käse",
+    article: "der",
+    plural: "Käse",
+    translation: "queso",
+    acceptedTranslations: ["queso", "el queso"],
     category: "Comida",
     level: "A1"
   },
   {
-    id: 33,
-    noun: "Wein",
-    article: "der",
-    plural: "Weine",
-    translation: "vino",
-    acceptedTranslations: ["vino", "el vino"],
+    id: 39,
+    noun: "Fleisch",
+    article: "das",
+    plural: "Fleisch",
+    translation: "carne",
+    acceptedTranslations: ["carne", "la carne"],
     category: "Comida",
     level: "A1"
   },
   {
-    id: 34,
-    noun: "Zucker",
-    article: "der",
-    plural: "Zucker",
-    translation: "azúcar",
-    acceptedTranslations: ["azúcar", "azucar", "el azúcar"],
-    category: "Comida",
-    level: "A2"
-  },
-  {
-    id: 35,
-    noun: "Salz",
+    id: 40,
+    noun: "Hähnchen",
     article: "das",
-    plural: "Salze",
-    translation: "sal",
-    acceptedTranslations: ["sal", "la sal"],
+    plural: "Hähnchen",
+    translation: "pollo",
+    acceptedTranslations: ["pollo", "el pollo"],
     category: "Comida",
-    level: "A2"
+    level: "A1"
   },
   {
-    id: 36,
+    id: 41,
+    noun: "Reis",
+    article: "der",
+    plural: "Reis",
+    translation: "arroz",
+    acceptedTranslations: ["arroz", "el arroz"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 42,
     noun: "Kartoffel",
     article: "die",
     plural: "Kartoffeln",
@@ -369,7 +436,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 37,
+    id: 43,
+    noun: "Tomate",
+    article: "die",
+    plural: "Tomaten",
+    translation: "tomate",
+    acceptedTranslations: ["tomate", "el tomate"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 44,
+    noun: "Salat",
+    article: "der",
+    plural: "Salate",
+    translation: "ensalada",
+    acceptedTranslations: ["ensalada", "la ensalada"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 45,
     noun: "Suppe",
     article: "die",
     plural: "Suppen",
@@ -378,10 +465,202 @@ const GERMAN_NOUNS = [
     category: "Comida",
     level: "A1"
   },
-
-  // --- CASA Y OBJETOS ---
   {
-    id: 38,
+    id: 46,
+    noun: "Gemüse",
+    article: "das",
+    plural: "Gemüse",
+    translation: "verdura",
+    acceptedTranslations: ["verdura", "la verdura", "vegetales", "verduras"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 47,
+    noun: "Obst",
+    article: "das",
+    plural: "Obst",
+    translation: "fruta",
+    acceptedTranslations: ["fruta", "la fruta", "frutas"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 48,
+    noun: "Kuchen",
+    article: "der",
+    plural: "Kuchen",
+    translation: "pastel",
+    acceptedTranslations: ["pastel", "el pastel", "tarta", "torta", "bizcocho"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 49,
+    noun: "Schokolade",
+    article: "die",
+    plural: "Schokoladen",
+    translation: "chocolate",
+    acceptedTranslations: ["chocolate", "el chocolate"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 50,
+    noun: "Zucker",
+    article: "der",
+    plural: "Zucker",
+    translation: "azúcar",
+    acceptedTranslations: ["azúcar", "azucar", "el azúcar"],
+    category: "Comida",
+    level: "A2"
+  },
+  {
+    id: 51,
+    noun: "Salz",
+    article: "das",
+    plural: "Salze",
+    translation: "sal",
+    acceptedTranslations: ["sal", "la sal"],
+    category: "Comida",
+    level: "A2"
+  },
+  {
+    id: 52,
+    noun: "Wasser",
+    article: "das",
+    plural: "Wasser",
+    translation: "agua",
+    acceptedTranslations: ["agua", "el agua"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 53,
+    noun: "Milch",
+    article: "die",
+    plural: "Milch",
+    translation: "leche",
+    acceptedTranslations: ["leche", "la leche"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 54,
+    noun: "Kaffee",
+    article: "der",
+    plural: "Kaffees",
+    translation: "café",
+    acceptedTranslations: ["café", "cafe", "el café"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 55,
+    noun: "Tee",
+    article: "der",
+    plural: "Tees",
+    translation: "té",
+    acceptedTranslations: ["té", "te", "el té"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 56,
+    noun: "Saft",
+    article: "der",
+    plural: "Säfte",
+    translation: "zumo",
+    acceptedTranslations: ["zumo", "jugo", "el zumo", "el jugo"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 57,
+    noun: "Bier",
+    article: "das",
+    plural: "Biere",
+    translation: "cerveza",
+    acceptedTranslations: ["cerveza", "la cerveza"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 58,
+    noun: "Wein",
+    article: "der",
+    plural: "Weine",
+    translation: "vino",
+    acceptedTranslations: ["vino", "el vino"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 59,
+    noun: "Flasche",
+    article: "die",
+    plural: "Flaschen",
+    translation: "botella",
+    acceptedTranslations: ["botella", "la botella"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 60,
+    noun: "Glas",
+    article: "das",
+    plural: "Gläser",
+    translation: "vaso",
+    acceptedTranslations: ["vaso", "el vaso", "copa", "cristal"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 61,
+    noun: "Tasse",
+    article: "die",
+    plural: "Tassen",
+    translation: "taza",
+    acceptedTranslations: ["taza", "la taza"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 62,
+    noun: "Teller",
+    article: "der",
+    plural: "Teller",
+    translation: "plato",
+    acceptedTranslations: ["plato", "el plato"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 63,
+    noun: "Restaurant",
+    article: "das",
+    plural: "Restaurants",
+    translation: "restaurante",
+    acceptedTranslations: ["restaurante", "el restaurante"],
+    category: "Comida",
+    level: "A1"
+  },
+  {
+    id: 64,
+    noun: "Rechnung",
+    article: "die",
+    plural: "Rechnungen",
+    translation: "cuenta",
+    acceptedTranslations: ["cuenta", "la cuenta", "factura"],
+    category: "Comida",
+    level: "A1"
+  },
+
+  // ==========================================
+  // 4. HOGAR Y OBJETOS (Wohnen & Haushalt)
+  // ==========================================
+  {
+    id: 65,
     noun: "Haus",
     article: "das",
     plural: "Häuser",
@@ -391,67 +670,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 39,
+    id: 66,
+    noun: "Wohnung",
+    article: "die",
+    plural: "Wohnungen",
+    translation: "apartamento",
+    acceptedTranslations: ["apartamento", "el apartamento", "piso", "departamento"],
+    category: "Hogar",
+    level: "A1"
+  },
+  {
+    id: 67,
     noun: "Zimmer",
     article: "das",
     plural: "Zimmer",
     translation: "habitación",
-    acceptedTranslations: ["habitación", "habitacion", "cuarto", "la habitación", "pieza"],
+    acceptedTranslations: ["habitación", "habitacion", "la habitación", "cuarto", "pieza"],
     category: "Hogar",
     level: "A1"
   },
   {
-    id: 40,
-    noun: "Tisch",
-    article: "der",
-    plural: "Tische",
-    translation: "mesa",
-    acceptedTranslations: ["mesa", "la mesa"],
-    category: "Hogar",
-    level: "A1"
-  },
-  {
-    id: 41,
-    noun: "Stuhl",
-    article: "der",
-    plural: "Stühle",
-    translation: "silla",
-    acceptedTranslations: ["silla", "la silla"],
-    category: "Hogar",
-    level: "A1"
-  },
-  {
-    id: 42,
-    noun: "Bett",
-    article: "das",
-    plural: "Betten",
-    translation: "cama",
-    acceptedTranslations: ["cama", "la cama"],
-    category: "Hogar",
-    level: "A1"
-  },
-  {
-    id: 43,
-    noun: "Tür",
-    article: "die",
-    plural: "Türen",
-    translation: "puerta",
-    acceptedTranslations: ["puerta", "la puerta"],
-    category: "Hogar",
-    level: "A1"
-  },
-  {
-    id: 44,
-    noun: "Fenster",
-    article: "das",
-    plural: "Fenster",
-    translation: "ventana",
-    acceptedTranslations: ["ventana", "la ventana"],
-    category: "Hogar",
-    level: "A1"
-  },
-  {
-    id: 45,
+    id: 68,
     noun: "Küche",
     article: "die",
     plural: "Küchen",
@@ -461,7 +700,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 46,
+    id: 69,
     noun: "Bad",
     article: "das",
     plural: "Bäder",
@@ -471,37 +710,37 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 47,
-    noun: "Lampe",
-    article: "die",
-    plural: "Lampen",
-    translation: "lámpara",
-    acceptedTranslations: ["lámpara", "lampara", "la lámpara"],
-    category: "Hogar",
-    level: "A1"
-  },
-  {
-    id: 48,
-    noun: "Schrank",
-    article: "der",
-    plural: "Schränke",
-    translation: "armario",
-    acceptedTranslations: ["armario", "el armario", "ropero", "closet"],
+    id: 70,
+    noun: "Schlafzimmer",
+    article: "das",
+    plural: "Schlafzimmer",
+    translation: "dormitorio",
+    acceptedTranslations: ["dormitorio", "el dormitorio", "habitación", "cuarto"],
     category: "Hogar",
     level: "A2"
   },
   {
-    id: 49,
-    noun: "Schlüssel",
-    article: "der",
-    plural: "Schlüssel",
-    translation: "llave",
-    acceptedTranslations: ["llave", "la llave"],
+    id: 71,
+    noun: "Wohnzimmer",
+    article: "das",
+    plural: "Wohnzimmer",
+    translation: "sala de estar",
+    acceptedTranslations: ["sala de estar", "salón", "salon", "sala"],
     category: "Hogar",
-    level: "A1"
+    level: "A2"
   },
   {
-    id: 50,
+    id: 72,
+    noun: "Balkon",
+    article: "der",
+    plural: "Balkone",
+    translation: "balcón",
+    acceptedTranslations: ["balcón", "balcon", "el balcón"],
+    category: "Hogar",
+    level: "A2"
+  },
+  {
+    id: 73,
     noun: "Garten",
     article: "der",
     plural: "Gärten",
@@ -511,7 +750,97 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 51,
+    id: 74,
+    noun: "Tür",
+    article: "die",
+    plural: "Türen",
+    translation: "puerta",
+    acceptedTranslations: ["puerta", "la puerta"],
+    category: "Hogar",
+    level: "A1"
+  },
+  {
+    id: 75,
+    noun: "Fenster",
+    article: "das",
+    plural: "Fenster",
+    translation: "ventana",
+    acceptedTranslations: ["ventana", "la ventana"],
+    category: "Hogar",
+    level: "A1"
+  },
+  {
+    id: 76,
+    noun: "Wand",
+    article: "die",
+    plural: "Wände",
+    translation: "pared",
+    acceptedTranslations: ["pared", "la pared", "muro"],
+    category: "Hogar",
+    level: "A2"
+  },
+  {
+    id: 77,
+    noun: "Tisch",
+    article: "der",
+    plural: "Tische",
+    translation: "mesa",
+    acceptedTranslations: ["mesa", "la mesa"],
+    category: "Hogar",
+    level: "A1"
+  },
+  {
+    id: 78,
+    noun: "Stuhl",
+    article: "der",
+    plural: "Stühle",
+    translation: "silla",
+    acceptedTranslations: ["silla", "la silla"],
+    category: "Hogar",
+    level: "A1"
+  },
+  {
+    id: 79,
+    noun: "Bett",
+    article: "das",
+    plural: "Betten",
+    translation: "cama",
+    acceptedTranslations: ["cama", "la cama"],
+    category: "Hogar",
+    level: "A1"
+  },
+  {
+    id: 80,
+    noun: "Sofa",
+    article: "das",
+    plural: "Sofas",
+    translation: "sofá",
+    acceptedTranslations: ["sofá", "sofa", "el sofá", "sillón"],
+    category: "Hogar",
+    level: "A1"
+  },
+  {
+    id: 81,
+    noun: "Schrank",
+    article: "der",
+    plural: "Schränke",
+    translation: "armario",
+    acceptedTranslations: ["armario", "el armario", "ropero", "closet"],
+    category: "Hogar",
+    level: "A2"
+  },
+  {
+    id: 82,
+    noun: "Lampe",
+    article: "die",
+    plural: "Lampen",
+    translation: "lámpara",
+    acceptedTranslations: ["lámpara", "lampara", "la lámpara"],
+    category: "Hogar",
+    level: "A1"
+  },
+  {
+    id: 83,
     noun: "Spiegel",
     article: "der",
     plural: "Spiegel",
@@ -520,10 +849,22 @@ const GERMAN_NOUNS = [
     category: "Hogar",
     level: "A2"
   },
-
-  // --- CIUDAD Y TRANSPORTE ---
   {
-    id: 52,
+    id: 84,
+    noun: "Schlüssel",
+    article: "der",
+    plural: "Schlüssel",
+    translation: "llave",
+    acceptedTranslations: ["llave", "la llave"],
+    category: "Hogar",
+    level: "A1"
+  },
+
+  // ==========================================
+  // 5. CIUDAD Y TRANSPORTE (Stadt & Verkehr)
+  // ==========================================
+  {
+    id: 85,
     noun: "Stadt",
     article: "die",
     plural: "Städte",
@@ -533,7 +874,17 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 53,
+    id: 86,
+    noun: "Dorf",
+    article: "das",
+    plural: "Dörfer",
+    translation: "pueblo",
+    acceptedTranslations: ["pueblo", "el pueblo"],
+    category: "Ciudad",
+    level: "A2"
+  },
+  {
+    id: 87,
     noun: "Straße",
     article: "die",
     plural: "Straßen",
@@ -543,7 +894,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 54,
+    id: 88,
+    noun: "Platz",
+    article: "der",
+    plural: "Plätze",
+    translation: "plaza",
+    acceptedTranslations: ["plaza", "la plaza", "lugar"],
+    category: "Ciudad",
+    level: "A1"
+  },
+  {
+    id: 89,
+    noun: "Weg",
+    article: "der",
+    plural: "Wege",
+    translation: "camino",
+    acceptedTranslations: ["camino", "el camino", "ruta", "sendero"],
+    category: "Ciudad",
+    level: "A2"
+  },
+  {
+    id: 90,
     noun: "Auto",
     article: "das",
     plural: "Autos",
@@ -553,17 +924,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 55,
-    noun: "Zug",
-    article: "der",
-    plural: "Züge",
-    translation: "tren",
-    acceptedTranslations: ["tren", "el tren"],
-    category: "Ciudad",
-    level: "A1"
-  },
-  {
-    id: 56,
+    id: 91,
     noun: "Bus",
     article: "der",
     plural: "Busse",
@@ -573,7 +934,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 57,
+    id: 92,
+    noun: "Zug",
+    article: "der",
+    plural: "Züge",
+    translation: "tren",
+    acceptedTranslations: ["tren", "el tren"],
+    category: "Ciudad",
+    level: "A1"
+  },
+  {
+    id: 93,
+    noun: "U-Bahn",
+    article: "die",
+    plural: "U-Bahnen",
+    translation: "metro",
+    acceptedTranslations: ["metro", "el metro", "subte"],
+    category: "Ciudad",
+    level: "A1"
+  },
+  {
+    id: 94,
     noun: "Fahrrad",
     article: "das",
     plural: "Fahrräder",
@@ -583,7 +964,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 58,
+    id: 95,
     noun: "Flugzeug",
     article: "das",
     plural: "Flugzeuge",
@@ -593,17 +974,17 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
   {
-    id: 59,
+    id: 96,
     noun: "Bahnhof",
     article: "der",
     plural: "Bahnhöfe",
-    translation: "estación",
-    acceptedTranslations: ["estación", "estacion", "la estación", "estación de tren"],
+    translation: "estación de tren",
+    acceptedTranslations: ["estación de tren", "estacion de tren", "estación", "la estación"],
     category: "Ciudad",
     level: "A1"
   },
   {
-    id: 60,
+    id: 97,
     noun: "Flughafen",
     article: "der",
     plural: "Flughäfen",
@@ -613,7 +994,17 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
   {
-    id: 61,
+    id: 98,
+    noun: "Haltestelle",
+    article: "die",
+    plural: "Haltestellen",
+    translation: "parada",
+    acceptedTranslations: ["parada", "la parada", "parada de autobús"],
+    category: "Ciudad",
+    level: "A1"
+  },
+  {
+    id: 99,
     noun: "Schule",
     article: "die",
     plural: "Schulen",
@@ -623,17 +1014,37 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 62,
-    noun: "Krankenhaus",
-    article: "das",
-    plural: "Krankenhäuser",
-    translation: "hospital",
-    acceptedTranslations: ["hospital", "el hospital"],
+    id: 100,
+    noun: "Universität",
+    article: "die",
+    plural: "Universitäten",
+    translation: "universidad",
+    acceptedTranslations: ["universidad", "la universidad", "facultad"],
     category: "Ciudad",
     level: "A2"
   },
   {
-    id: 63,
+    id: 101,
+    noun: "Krankenhaus",
+    article: "das",
+    plural: "Krankenhäuser",
+    translation: "hospital",
+    acceptedTranslations: ["hospital", "el hospital", "clínica"],
+    category: "Ciudad",
+    level: "A2"
+  },
+  {
+    id: 102,
+    noun: "Apotheke",
+    article: "die",
+    plural: "Apotheken",
+    translation: "farmacia",
+    acceptedTranslations: ["farmacia", "la farmacia"],
+    category: "Ciudad",
+    level: "A2"
+  },
+  {
+    id: 103,
     noun: "Bank",
     article: "die",
     plural: "Banken",
@@ -643,7 +1054,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 64,
+    id: 104,
     noun: "Geschäft",
     article: "das",
     plural: "Geschäfte",
@@ -653,7 +1064,17 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
   {
-    id: 65,
+    id: 105,
+    noun: "Supermarkt",
+    article: "der",
+    plural: "Supermärkte",
+    translation: "supermercado",
+    acceptedTranslations: ["supermercado", "el supermercado", "súper"],
+    category: "Ciudad",
+    level: "A1"
+  },
+  {
+    id: 106,
     noun: "Park",
     article: "der",
     plural: "Parks",
@@ -663,7 +1084,17 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 66,
+    id: 107,
+    noun: "Hotel",
+    article: "das",
+    plural: "Hotels",
+    translation: "hotel",
+    acceptedTranslations: ["hotel", "el hotel"],
+    category: "Ciudad",
+    level: "A1"
+  },
+  {
+    id: 108,
     noun: "Brücke",
     article: "die",
     plural: "Brücken",
@@ -673,9 +1104,11 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
 
-  // --- NATURALEZA Y TIEMPO ---
+  // ==========================================
+  // 6. NATURALEZA Y CLIMA (Natur & Wetter)
+  // ==========================================
   {
-    id: 67,
+    id: 109,
     noun: "Sonne",
     article: "die",
     plural: "Sonnen",
@@ -685,7 +1118,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 68,
+    id: 110,
     noun: "Mond",
     article: "der",
     plural: "Monde",
@@ -695,7 +1128,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 69,
+    id: 111,
     noun: "Stern",
     article: "der",
     plural: "Sterne",
@@ -705,77 +1138,27 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
   {
-    id: 70,
-    noun: "Baum",
+    id: 112,
+    noun: "Himmel",
     article: "der",
-    plural: "Bäume",
-    translation: "árbol",
-    acceptedTranslations: ["árbol", "arbol", "el árbol"],
+    plural: "Himmel",
+    translation: "cielo",
+    acceptedTranslations: ["cielo", "el cielo"],
     category: "Naturaleza",
-    level: "A1"
+    level: "A2"
   },
   {
-    id: 71,
-    noun: "Blume",
+    id: 113,
+    noun: "Wolke",
     article: "die",
-    plural: "Blumen",
-    translation: "flor",
-    acceptedTranslations: ["flor", "la flor"],
-    category: "Naturaleza",
-    level: "A1"
-  },
-  {
-    id: 72,
-    noun: "Berg",
-    article: "der",
-    plural: "Berge",
-    translation: "montaña",
-    acceptedTranslations: ["montaña", "montana", "la montaña", "monte"],
+    plural: "Wolken",
+    translation: "nube",
+    acceptedTranslations: ["nube", "la nube"],
     category: "Naturaleza",
     level: "A2"
   },
   {
-    id: 73,
-    noun: "Meer",
-    article: "das",
-    plural: "Meere",
-    translation: "mar",
-    acceptedTranslations: ["mar", "el mar"],
-    category: "Naturaleza",
-    level: "A1"
-  },
-  {
-    id: 74,
-    noun: "Fluss",
-    article: "der",
-    plural: "Flüsse",
-    translation: "río",
-    acceptedTranslations: ["río", "rio", "el río"],
-    category: "Naturaleza",
-    level: "A2"
-  },
-  {
-    id: 75,
-    noun: "Wald",
-    article: "der",
-    plural: "Wälder",
-    translation: "bosque",
-    acceptedTranslations: ["bosque", "el bosque"],
-    category: "Naturaleza",
-    level: "A2"
-  },
-  {
-    id: 76,
-    noun: "Wetter",
-    article: "das",
-    plural: "Wetter",
-    translation: "clima",
-    acceptedTranslations: ["clima", "el clima", "tiempo"],
-    category: "Naturaleza",
-    level: "A1"
-  },
-  {
-    id: 77,
+    id: 114,
     noun: "Regen",
     article: "der",
     plural: "Regen",
@@ -785,7 +1168,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 78,
+    id: 115,
     noun: "Schnee",
     article: "der",
     plural: "Schnee",
@@ -794,10 +1177,112 @@ const GERMAN_NOUNS = [
     category: "Naturaleza",
     level: "A2"
   },
-
-  // --- CUERPO HUMANO ---
   {
-    id: 79,
+    id: 116,
+    noun: "Wind",
+    article: "der",
+    plural: "Winde",
+    translation: "viento",
+    acceptedTranslations: ["viento", "el viento"],
+    category: "Naturaleza",
+    level: "A2"
+  },
+  {
+    id: 117,
+    noun: "Wetter",
+    article: "das",
+    plural: "Wetter",
+    translation: "clima",
+    acceptedTranslations: ["clima", "el clima", "tiempo"],
+    category: "Naturaleza",
+    level: "A1"
+  },
+  {
+    id: 118,
+    noun: "Baum",
+    article: "der",
+    plural: "Bäume",
+    translation: "árbol",
+    acceptedTranslations: ["árbol", "arbol", "el árbol"],
+    category: "Naturaleza",
+    level: "A1"
+  },
+  {
+    id: 119,
+    noun: "Blume",
+    article: "die",
+    plural: "Blumen",
+    translation: "flor",
+    acceptedTranslations: ["flor", "la flor"],
+    category: "Naturaleza",
+    level: "A1"
+  },
+  {
+    id: 120,
+    noun: "Wald",
+    article: "der",
+    plural: "Wälder",
+    translation: "bosque",
+    acceptedTranslations: ["bosque", "el bosque"],
+    category: "Naturaleza",
+    level: "A2"
+  },
+  {
+    id: 121,
+    noun: "Berg",
+    article: "der",
+    plural: "Berge",
+    translation: "montaña",
+    acceptedTranslations: ["montaña", "montana", "la montaña", "monte"],
+    category: "Naturaleza",
+    level: "A2"
+  },
+  {
+    id: 122,
+    noun: "Meer",
+    article: "das",
+    plural: "Meere",
+    translation: "mar",
+    acceptedTranslations: ["mar", "el mar"],
+    category: "Naturaleza",
+    level: "A1"
+  },
+  {
+    id: 123,
+    noun: "See",
+    article: "der",
+    plural: "Seen",
+    translation: "lago",
+    acceptedTranslations: ["lago", "el lago"],
+    category: "Naturaleza",
+    level: "A2"
+  },
+  {
+    id: 124,
+    noun: "Fluss",
+    article: "der",
+    plural: "Flüsse",
+    translation: "río",
+    acceptedTranslations: ["río", "rio", "el río"],
+    category: "Naturaleza",
+    level: "A2"
+  },
+  {
+    id: 125,
+    noun: "Strand",
+    article: "der",
+    plural: "Strände",
+    translation: "playa",
+    acceptedTranslations: ["playa", "la playa"],
+    category: "Naturaleza",
+    level: "A2"
+  },
+
+  // ==========================================
+  // 7. CUERPO HUMANO (Körper & Gesundheit)
+  // ==========================================
+  {
+    id: 126,
     noun: "Kopf",
     article: "der",
     plural: "Köpfe",
@@ -807,7 +1292,17 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 80,
+    id: 127,
+    noun: "Haar",
+    article: "das",
+    plural: "Haare",
+    translation: "pelo",
+    acceptedTranslations: ["pelo", "el pelo", "cabello"],
+    category: "Cuerpo",
+    level: "A1"
+  },
+  {
+    id: 128,
     noun: "Auge",
     article: "das",
     plural: "Augen",
@@ -817,17 +1312,17 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 81,
+    id: 129,
     noun: "Ohr",
     article: "das",
     plural: "Ohren",
     translation: "oreja",
-    acceptedTranslations: ["oreja", "oído", "la oreja", "el oído", "oido"],
+    acceptedTranslations: ["oreja", "la oreja", "oído", "el oído", "oido"],
     category: "Cuerpo",
     level: "A2"
   },
   {
-    id: 82,
+    id: 130,
     noun: "Nase",
     article: "die",
     plural: "Nasen",
@@ -837,7 +1332,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 83,
+    id: 131,
     noun: "Mund",
     article: "der",
     plural: "Münder",
@@ -847,7 +1342,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 84,
+    id: 132,
+    noun: "Zahn",
+    article: "der",
+    plural: "Zähne",
+    translation: "diente",
+    acceptedTranslations: ["diente", "el diente"],
+    category: "Cuerpo",
+    level: "A2"
+  },
+  {
+    id: 133,
+    noun: "Hals",
+    article: "der",
+    plural: "Hälse",
+    translation: "cuello",
+    acceptedTranslations: ["cuello", "el cuello", "garganta"],
+    category: "Cuerpo",
+    level: "A2"
+  },
+  {
+    id: 134,
     noun: "Hand",
     article: "die",
     plural: "Hände",
@@ -857,7 +1372,17 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 85,
+    id: 135,
+    noun: "Finger",
+    article: "der",
+    plural: "Finger",
+    translation: "dedo",
+    acceptedTranslations: ["dedo", "el dedo"],
+    category: "Cuerpo",
+    level: "A2"
+  },
+  {
+    id: 136,
     noun: "Arm",
     article: "der",
     plural: "Arme",
@@ -867,7 +1392,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 86,
+    id: 137,
     noun: "Bein",
     article: "das",
     plural: "Beine",
@@ -877,7 +1402,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 87,
+    id: 138,
     noun: "Fuß",
     article: "der",
     plural: "Füße",
@@ -887,7 +1412,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 88,
+    id: 139,
+    noun: "Rücken",
+    article: "der",
+    plural: "Rücken",
+    translation: "espalda",
+    acceptedTranslations: ["espalda", "la espalda"],
+    category: "Cuerpo",
+    level: "A2"
+  },
+  {
+    id: 140,
+    noun: "Bauch",
+    article: "der",
+    plural: "Bäuche",
+    translation: "barriga",
+    acceptedTranslations: ["barriga", "vientre", "estómago", "el estómago", "panza"],
+    category: "Cuerpo",
+    level: "A2"
+  },
+  {
+    id: 141,
     noun: "Herz",
     article: "das",
     plural: "Herzen",
@@ -897,9 +1442,11 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
 
-  // --- ROPA ---
+  // ==========================================
+  // 8. ROPA (Kleidung)
+  // ==========================================
   {
-    id: 89,
+    id: 142,
     noun: "Kleid",
     article: "das",
     plural: "Kleider",
@@ -909,7 +1456,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 90,
+    id: 143,
     noun: "Hose",
     article: "die",
     plural: "Hosen",
@@ -919,7 +1466,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 91,
+    id: 144,
     noun: "Hemd",
     article: "das",
     plural: "Hemden",
@@ -929,17 +1476,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 92,
-    noun: "Schuh",
-    article: "der",
-    plural: "Schuhe",
-    translation: "zapato",
-    acceptedTranslations: ["zapato", "el zapato"],
+    id: 145,
+    noun: "T-Shirt",
+    article: "das",
+    plural: "T-Shirts",
+    translation: "camiseta",
+    acceptedTranslations: ["camiseta", "la camiseta", "remera", "playera"],
     category: "Ropa",
     level: "A1"
   },
   {
-    id: 93,
+    id: 146,
+    noun: "Pullover",
+    article: "der",
+    plural: "Pullover",
+    translation: "jersey",
+    acceptedTranslations: ["jersey", "el jersey", "suéter", "sueter", "chomba"],
+    category: "Ropa",
+    level: "A1"
+  },
+  {
+    id: 147,
     noun: "Jacke",
     article: "die",
     plural: "Jacken",
@@ -949,19 +1506,81 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 94,
+    id: 148,
+    noun: "Mantel",
+    article: "der",
+    plural: "Mäntel",
+    translation: "abrigo",
+    acceptedTranslations: ["abrigo", "el abrigo", "sobretodo"],
+    category: "Ropa",
+    level: "A2"
+  },
+  {
+    id: 149,
+    noun: "Schuh",
+    article: "der",
+    plural: "Schuhe",
+    translation: "zapato",
+    acceptedTranslations: ["zapato", "el zapato"],
+    category: "Ropa",
+    level: "A1"
+  },
+  {
+    id: 150,
+    noun: "Stiefel",
+    article: "der",
+    plural: "Stiefel",
+    translation: "bota",
+    acceptedTranslations: ["bota", "la bota", "botas"],
+    category: "Ropa",
+    level: "A2"
+  },
+  {
+    id: 151,
+    noun: "Socke",
+    article: "die",
+    plural: "Socken",
+    translation: "calcetín",
+    acceptedTranslations: ["calcetín", "calcetin", "el calcetín", "media"],
+    category: "Ropa",
+    level: "A2"
+  },
+  {
+    id: 152,
+    noun: "Brille",
+    article: "die",
+    plural: "Brillen",
+    translation: "gafas",
+    acceptedTranslations: ["gafas", "las gafas", "lentes", "anteojos"],
+    category: "Ropa",
+    level: "A1"
+  },
+  {
+    id: 153,
     noun: "Tasche",
     article: "die",
     plural: "Taschen",
     translation: "bolso",
-    acceptedTranslations: ["bolso", "bolsa", "la bolsa", "el bolso", "mochila"],
+    acceptedTranslations: ["bolso", "bolsa", "la bolsa", "el bolso", "cartera"],
     category: "Ropa",
     level: "A1"
   },
-
-  // --- ESTUDIO, TRABAJO Y TIEMPO ---
   {
-    id: 95,
+    id: 154,
+    noun: "Koffer",
+    article: "der",
+    plural: "Koffer",
+    translation: "maleta",
+    acceptedTranslations: ["maleta", "la maleta", "valija"],
+    category: "Ropa",
+    level: "A2"
+  },
+
+  // ==========================================
+  // 9. ESTUDIO Y APRENDIZAJE (Lernen & Bildung)
+  // ==========================================
+  {
+    id: 155,
     noun: "Buch",
     article: "das",
     plural: "Bücher",
@@ -971,27 +1590,47 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 96,
+    id: 156,
+    noun: "Heft",
+    article: "das",
+    plural: "Hefte",
+    translation: "cuaderno",
+    acceptedTranslations: ["cuaderno", "el cuaderno", "libreta"],
+    category: "Estudio",
+    level: "A1"
+  },
+  {
+    id: 157,
     noun: "Stift",
     article: "der",
     plural: "Stifte",
     translation: "bolígrafo",
-    acceptedTranslations: ["bolígrafo", "boligrafo", "lápiz", "lapiz", "pluma", "el bolígrafo"],
+    acceptedTranslations: ["bolígrafo", "boligrafo", "el bolígrafo", "pluma"],
     category: "Estudio",
     level: "A1"
   },
   {
-    id: 97,
-    noun: "Zeitung",
-    article: "die",
-    plural: "Zeitungen",
-    translation: "periódico",
-    acceptedTranslations: ["periódico", "periodico", "diario", "el periódico"],
+    id: 158,
+    noun: "Bleistift",
+    article: "der",
+    plural: "Bleistifte",
+    translation: "lápiz",
+    acceptedTranslations: ["lápiz", "lapiz", "el lápiz"],
     category: "Estudio",
     level: "A1"
   },
   {
-    id: 98,
+    id: 159,
+    noun: "Papier",
+    article: "das",
+    plural: "Papiere",
+    translation: "papel",
+    acceptedTranslations: ["papel", "el papel"],
+    category: "Estudio",
+    level: "A1"
+  },
+  {
+    id: 160,
     noun: "Brief",
     article: "der",
     plural: "Briefe",
@@ -1001,7 +1640,37 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
   {
-    id: 99,
+    id: 161,
+    noun: "E-Mail",
+    article: "die",
+    plural: "E-Mails",
+    translation: "correo electrónico",
+    acceptedTranslations: ["correo electrónico", "correo", "email", "el correo"],
+    category: "Estudio",
+    level: "A1"
+  },
+  {
+    id: 162,
+    noun: "Computer",
+    article: "der",
+    plural: "Computer",
+    translation: "ordenador",
+    acceptedTranslations: ["ordenador", "computadora", "computador", "el ordenador"],
+    category: "Estudio",
+    level: "A1"
+  },
+  {
+    id: 163,
+    noun: "Handy",
+    article: "das",
+    plural: "Handys",
+    translation: "móvil",
+    acceptedTranslations: ["móvil", "movil", "celular", "el móvil", "teléfono móvil"],
+    category: "Estudio",
+    level: "A1"
+  },
+  {
+    id: 164,
     noun: "Wort",
     article: "das",
     plural: "Wörter",
@@ -1011,17 +1680,61 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 100,
-    noun: "Sprache",
-    article: "die",
-    plural: "Sprachen",
-    translation: "idioma",
-    acceptedTranslations: ["idioma", "lengua", "el idioma"],
+    id: 165,
+    noun: "Satz",
+    article: "der",
+    plural: "Sätze",
+    translation: "frase",
+    acceptedTranslations: ["frase", "la frase", "oración", "oracion"],
     category: "Estudio",
     level: "A1"
   },
   {
-    id: 101,
+    id: 166,
+    noun: "Sprache",
+    article: "die",
+    plural: "Sprachen",
+    translation: "idioma",
+    acceptedTranslations: ["idioma", "el idioma", "lengua"],
+    category: "Estudio",
+    level: "A1"
+  },
+  {
+    id: 167,
+    noun: "Wörterbuch",
+    article: "das",
+    plural: "Wörterbücher",
+    translation: "diccionario",
+    acceptedTranslations: ["diccionario", "el diccionario"],
+    category: "Estudio",
+    level: "A2"
+  },
+  {
+    id: 168,
+    noun: "Prüfung",
+    article: "die",
+    plural: "Prüfungen",
+    translation: "examen",
+    acceptedTranslations: ["examen", "el examen", "prueba"],
+    category: "Estudio",
+    level: "A2"
+  },
+  {
+    id: 169,
+    noun: "Hausaufgabe",
+    article: "die",
+    plural: "Hausaufgaben",
+    translation: "tarea",
+    acceptedTranslations: ["tarea", "la tarea", "deberes", "los deberes"],
+    category: "Estudio",
+    level: "A1"
+  },
+
+  // ==========================================
+  // 10. VIDA DIARIA Y TRABAJO (Alltag & Beruf)
+  // ==========================================
+  {
+    id: 170,
     noun: "Arbeit",
     article: "die",
     plural: "Arbeiten",
@@ -1031,7 +1744,47 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 102,
+    id: 171,
+    noun: "Beruf",
+    article: "der",
+    plural: "Berufe",
+    translation: "profesión",
+    acceptedTranslations: ["profesión", "profesion", "la profesión", "oficio"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 172,
+    noun: "Firma",
+    article: "die",
+    plural: "Firmen",
+    translation: "empresa",
+    acceptedTranslations: ["empresa", "la empresa", "compañía"],
+    category: "Vida Diaria",
+    level: "A2"
+  },
+  {
+    id: 173,
+    noun: "Büro",
+    article: "das",
+    plural: "Büros",
+    translation: "oficina",
+    acceptedTranslations: ["oficina", "la oficina", "despacho"],
+    category: "Vida Diaria",
+    level: "A2"
+  },
+  {
+    id: 174,
+    noun: "Termin",
+    article: "der",
+    plural: "Termine",
+    translation: "cita",
+    acceptedTranslations: ["cita", "la cita", "turno", "compromiso"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 175,
     noun: "Geld",
     article: "das",
     plural: "Gelder",
@@ -1041,7 +1794,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 103,
+    id: 176,
+    noun: "Euro",
+    article: "der",
+    plural: "Euros",
+    translation: "euro",
+    acceptedTranslations: ["euro", "el euro"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 177,
+    noun: "Preis",
+    article: "der",
+    plural: "Preise",
+    translation: "precio",
+    acceptedTranslations: ["precio", "el precio"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 178,
     noun: "Zeit",
     article: "die",
     plural: "Zeiten",
@@ -1051,17 +1824,37 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 104,
+    id: 179,
     noun: "Uhr",
     article: "die",
     plural: "Uhren",
     translation: "reloj",
-    acceptedTranslations: ["reloj", "el reloj"],
+    acceptedTranslations: ["reloj", "el reloj", "hora"],
     category: "Vida Diaria",
     level: "A1"
   },
   {
-    id: 105,
+    id: 180,
+    noun: "Stunde",
+    article: "die",
+    plural: "Stunden",
+    translation: "hora",
+    acceptedTranslations: ["hora", "la hora"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 181,
+    noun: "Minute",
+    article: "die",
+    plural: "Minuten",
+    translation: "minuto",
+    acceptedTranslations: ["minuto", "el minuto"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 182,
     noun: "Tag",
     article: "der",
     plural: "Tage",
@@ -1071,7 +1864,27 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 106,
+    id: 183,
+    noun: "Morgen",
+    article: "der",
+    plural: "Morgen",
+    translation: "mañana",
+    acceptedTranslations: ["mañana", "la mañana"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 184,
+    noun: "Abend",
+    article: "der",
+    plural: "Abende",
+    translation: "tarde",
+    acceptedTranslations: ["tarde", "la tarde", "noche", "la noche"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 185,
     noun: "Nacht",
     article: "die",
     plural: "Nächte",
@@ -1081,7 +1894,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 107,
+    id: 186,
     noun: "Woche",
     article: "die",
     plural: "Wochen",
@@ -1091,7 +1904,17 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 108,
+    id: 187,
+    noun: "Wochenende",
+    article: "das",
+    plural: "Wochenenden",
+    translation: "fin de semana",
+    acceptedTranslations: ["fin de semana", "el fin de semana", "finde"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 188,
     noun: "Monat",
     article: "der",
     plural: "Monate",
@@ -1101,7 +1924,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 109,
+    id: 189,
     noun: "Jahr",
     article: "das",
     plural: "Jahre",
@@ -1111,7 +1934,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 110,
+    id: 190,
     noun: "Name",
     article: "der",
     plural: "Namen",
@@ -1121,7 +1944,47 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 111,
+    id: 191,
+    noun: "Vorname",
+    article: "der",
+    plural: "Vornamen",
+    translation: "nombre de pila",
+    acceptedTranslations: ["nombre de pila", "nombre", "primer nombre"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 192,
+    noun: "Nachname",
+    article: "der",
+    plural: "Nachnamen",
+    translation: "apellido",
+    acceptedTranslations: ["apellido", "el apellido"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 193,
+    noun: "Adresse",
+    article: "die",
+    plural: "Adressen",
+    translation: "dirección",
+    acceptedTranslations: ["dirección", "direccion", "la dirección", "domicilio"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 194,
+    noun: "Telefonnummer",
+    article: "die",
+    plural: "Telefonnummern",
+    translation: "número de teléfono",
+    acceptedTranslations: ["número de teléfono", "numero de telefono", "teléfono", "telefono"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 195,
     noun: "Frage",
     article: "die",
     plural: "Fragen",
@@ -1131,7 +1994,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 112,
+    id: 196,
     noun: "Antwort",
     article: "die",
     plural: "Antworten",
@@ -1141,7 +2004,7 @@ const GERMAN_NOUNS = [
     level: "A1"
   },
   {
-    id: 113,
+    id: 197,
     noun: "Problem",
     article: "das",
     plural: "Probleme",
@@ -1151,7 +2014,17 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
   {
-    id: 114,
+    id: 198,
+    noun: "Hilfe",
+    article: "die",
+    plural: "Hilfen",
+    translation: "ayuda",
+    acceptedTranslations: ["ayuda", "la ayuda", "auxilio"],
+    category: "Vida Diaria",
+    level: "A1"
+  },
+  {
+    id: 199,
     noun: "Reise",
     article: "die",
     plural: "Reisen",
@@ -1161,62 +2034,12 @@ const GERMAN_NOUNS = [
     level: "A2"
   },
   {
-    id: 115,
+    id: 200,
     noun: "Urlaub",
     article: "der",
     plural: "Urlaube",
     translation: "vacaciones",
     acceptedTranslations: ["vacaciones", "las vacaciones"],
-    category: "Vida Diaria",
-    level: "A2"
-  },
-  {
-    id: 116,
-    noun: "Musik",
-    article: "die",
-    plural: "Musiken",
-    translation: "música",
-    acceptedTranslations: ["música", "musica", "la música"],
-    category: "Vida Diaria",
-    level: "A1"
-  },
-  {
-    id: 117,
-    noun: "Film",
-    article: "der",
-    plural: "Filme",
-    translation: "película",
-    acceptedTranslations: ["película", "pelicula", "la película", "film"],
-    category: "Vida Diaria",
-    level: "A1"
-  },
-  {
-    id: 118,
-    noun: "Spiel",
-    article: "das",
-    plural: "Spiele",
-    translation: "juego",
-    acceptedTranslations: ["juego", "el juego", "partido"],
-    category: "Vida Diaria",
-    level: "A1"
-  },
-  {
-    id: 119,
-    noun: "Bild",
-    article: "das",
-    plural: "Bilder",
-    translation: "imagen",
-    acceptedTranslations: ["imagen", "cuadro", "foto", "la imagen", "el cuadro"],
-    category: "Vida Diaria",
-    level: "A1"
-  },
-  {
-    id: 120,
-    noun: "Weg",
-    article: "der",
-    plural: "Wege",
-    translation: "camino",
-    acceptedTranslations: ["camino", "el camino", "ruta", "sendero"],
     category: "Vida Diaria",
     level: "A2"
   }
