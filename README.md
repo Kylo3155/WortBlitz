@@ -5,9 +5,9 @@ Una aplicación web moderna, interactiva y responsiva diseñada para dominar el 
 ## ✨ Características
 
 - 🧠 **Tres niveles de dificultad**:
-  - 🟢 **Modo Fácil**: Solo escribes el artículo (`der`/`die`/`das`). El plural y la traducción están visibles como referencia.
-  - 🔵 **Modo Medio**: Escribes el artículo y el plural (`die ...`). La traducción está visible como pista.
-  - 🟠 **Modo Difícil**: Escribes todo (artículo, plural y traducción en español).
+  - 🟢 **Modo Fácil**: Solo escribes el artículo (`der`/`die`/`das`). El plural y la traducción están visibles en sus campos como referencia.
+  - 🔵 **Modo Medio**: Escribes el artículo y la traducción en español. El plural está visible como referencia.
+  - 🟠 **Modo Difícil**: Escribes el artículo y la forma plural (`die ...`). La traducción está visible como referencia.
 - ⚡ **Teclado de caracteres alemanes integrado**: Botones rápidos para insertar `ä`, `ö`, `ü`, `ß`, `Ä`, `Ö`, `Ü` en cualquier teclado.
 - 🎯 **Atajos rápidos de artículo**: Botones dedicados o teclas `[1] der`, `[2] die`, `[3] das`.
 - 🔊 **Audio y pronunciación nativa**:

@@ -294,28 +294,13 @@
       dom.inputTranslation.style.cursor = 'default';
       if (dom.translationFieldHint) dom.translationFieldHint.textContent = '(Visible en modo fácil)';
     } else if (state.difficulty === 'medium') {
-      // MODO MEDIO: Escribes el artículo y el plural. Traducción visible en su campo.
-      // Plural editable
-      dom.inputPlural.value = '';
-      dom.inputPlural.removeAttribute('readonly');
-      dom.inputPlural.style.opacity = '1';
-      dom.inputPlural.style.cursor = 'text';
-      if (dom.pluralFieldHint) dom.pluralFieldHint.textContent = 'die + sustantivo';
-
-      // Traducción visible y bloqueada únicamente en su campo
-      dom.inputTranslation.value = state.currentWord.translation;
-      dom.inputTranslation.setAttribute('readonly', 'true');
-      dom.inputTranslation.style.opacity = '0.75';
-      dom.inputTranslation.style.cursor = 'default';
-      if (dom.translationFieldHint) dom.translationFieldHint.textContent = '(Visible en modo medio)';
-    } else {
-      // MODO DIFÍCIL: Escribes todo (artículo, plural y traducción).
-      // Plural editable
-      dom.inputPlural.value = '';
-      dom.inputPlural.removeAttribute('readonly');
-      dom.inputPlural.style.opacity = '1';
-      dom.inputPlural.style.cursor = 'text';
-      if (dom.pluralFieldHint) dom.pluralFieldHint.textContent = 'die + sustantivo';
+      // MODO MEDIO: Escribes el artículo y la traducción. Plural visible.
+      // Plural visible y bloqueado
+      dom.inputPlural.value = state.currentWord.plural;
+      dom.inputPlural.setAttribute('readonly', 'true');
+      dom.inputPlural.style.opacity = '0.75';
+      dom.inputPlural.style.cursor = 'default';
+      if (dom.pluralFieldHint) dom.pluralFieldHint.textContent = '(Visible en modo medio)';
 
       // Traducción editable
       dom.inputTranslation.value = '';
@@ -323,6 +308,21 @@
       dom.inputTranslation.style.opacity = '1';
       dom.inputTranslation.style.cursor = 'text';
       if (dom.translationFieldHint) dom.translationFieldHint.textContent = '(Escribe en español)';
+    } else {
+      // MODO DIFÍCIL: Escribes el artículo y el plural. Traducción visible.
+      // Plural editable
+      dom.inputPlural.value = '';
+      dom.inputPlural.removeAttribute('readonly');
+      dom.inputPlural.style.opacity = '1';
+      dom.inputPlural.style.cursor = 'text';
+      if (dom.pluralFieldHint) dom.pluralFieldHint.textContent = 'die + sustantivo';
+
+      // Traducción visible y bloqueada
+      dom.inputTranslation.value = state.currentWord.translation;
+      dom.inputTranslation.setAttribute('readonly', 'true');
+      dom.inputTranslation.style.opacity = '0.75';
+      dom.inputTranslation.style.cursor = 'default';
+      if (dom.translationFieldHint) dom.translationFieldHint.textContent = '(Visible en modo difícil)';
     }
   }
 
@@ -376,17 +376,17 @@
     const articleValid = userArticle === expectedArticle;
 
     // Validación Plural:
-    // En 'easy', está dado/visible, por lo que se considera válido automáticamente
+    // Solo requerida en 'hard' ("el más difícil sea escribir el plural")
     let pluralValid = true;
-    if (state.difficulty === 'medium' || state.difficulty === 'hard') {
+    if (state.difficulty === 'hard') {
       pluralValid = userPlural === expectedPlural;
     }
 
     // Validación Traducción:
-    // Solo en 'hard' se exige escribirla; en 'easy' y 'medium' está visible
+    // Solo requerida en 'medium' ("el nivel medio sea escribir el artículo y la traducción")
     let translationValid = true;
     let userTranslation = '';
-    if (state.difficulty === 'hard') {
+    if (state.difficulty === 'medium') {
       userTranslation = normalizeText(dom.inputTranslation.value);
       const userClean = stripSpanishArticles(userTranslation);
       const userCleanNoAccents = removeAccents(userClean);
@@ -411,10 +411,10 @@
 
     // Resaltar campos individuales según el modo activo
     setInputValidationState(dom.inputArticle, articleValid);
-    if (state.difficulty === 'medium' || state.difficulty === 'hard') {
+    if (state.difficulty === 'hard') {
       setInputValidationState(dom.inputPlural, pluralValid);
     }
-    if (state.difficulty === 'hard') {
+    if (state.difficulty === 'medium') {
       setInputValidationState(dom.inputTranslation, translationValid);
     }
 
@@ -527,10 +527,10 @@
 
     // Desglose de Plural
     dom.corrValPlural.textContent = `die ${word.plural}`;
-    if (state.difficulty === 'easy') {
+    if (state.difficulty === 'easy' || state.difficulty === 'medium') {
       dom.cardPlural.className = 'solution-card is-correct';
       dom.statusIconPlural.textContent = 'ℹ️';
-      dom.corrUserPlural.innerHTML = `<span class="correct-text">Visible en modo fácil</span>`;
+      dom.corrUserPlural.innerHTML = `<span class="correct-text">Visible en modo ${state.difficulty === 'easy' ? 'fácil' : 'medio'}</span>`;
     } else if (details.pluralValid) {
       dom.cardPlural.className = 'solution-card is-correct';
       dom.statusIconPlural.textContent = '✅';
@@ -544,10 +544,10 @@
 
     // Desglose de Traducción
     dom.corrValTrans.textContent = word.translation;
-    if (state.difficulty === 'easy' || state.difficulty === 'medium') {
+    if (state.difficulty === 'easy' || state.difficulty === 'hard') {
       dom.cardTrans.className = 'solution-card is-correct';
       dom.statusIconTrans.textContent = 'ℹ️';
-      dom.corrUserTrans.innerHTML = `<span class="correct-text">Visible en modo ${state.difficulty === 'easy' ? 'fácil' : 'medio'}</span>`;
+      dom.corrUserTrans.innerHTML = `<span class="correct-text">Visible en modo ${state.difficulty === 'easy' ? 'fácil' : 'difícil'}</span>`;
     } else if (details.translationValid) {
       dom.cardTrans.className = 'solution-card is-correct';
       dom.statusIconTrans.textContent = '✅';
@@ -761,6 +761,9 @@
         btn.classList.add('active');
         if (state.difficulty === 'easy') {
           dom.btnSubmit.focus();
+        } else if (state.difficulty === 'medium') {
+          dom.inputTranslation.focus();
+          state.lastActiveInput = dom.inputTranslation;
         } else {
           dom.inputPlural.focus();
           state.lastActiveInput = dom.inputPlural;
@@ -794,6 +797,9 @@
         });
         if (state.difficulty === 'easy') {
           dom.btnSubmit.focus();
+        } else if (state.difficulty === 'medium') {
+          dom.inputTranslation.focus();
+          state.lastActiveInput = dom.inputTranslation;
         } else {
           dom.inputPlural.focus();
           state.lastActiveInput = dom.inputPlural;
